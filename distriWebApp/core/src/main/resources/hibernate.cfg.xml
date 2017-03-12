@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <mapping class="org.appfuse.model.User"/>
+        <mapping class="org.appfuse.model.Role"/>
+        <mapping class="be.fp.distriWebApp.core.model.eo.Distributeur"/>
+         <mapping class="be.fp.distriWebApp.core.model.eo.Cocktail"/>
+          <mapping class="be.fp.distriWebApp.core.model.eo.Districoktaildispo"/>
+           <mapping class="be.fp.distriWebApp.core.model.eo.Districoktailtodo"/>
+            <mapping class="be.fp.distriWebApp.core.model.eo.Ingredient"/>
+             <mapping class="be.fp.distriWebApp.core.model.eo.Ingredientcocktail"/>
+              <mapping class="be.fp.distriWebApp.core.model.eo.Pompe"/>
+              <mapping class="be.fp.distriWebApp.core.model.eo.RefLovs"/>
+                <mapping class="be.fp.distriWebApp.core.model.eo.RefLovsDomains"/>
+     </session-factory> 
+</hibernate-configuration>

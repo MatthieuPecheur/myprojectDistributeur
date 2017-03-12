@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PROCESS model-entity="JSFProcess">
+ <PROCESS-ITEM NAME="rules:#home.xhtml" PATH="/home.xhtml"
+  SHAPE="256,33,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#home.xhtml:0" NAME="item" PATH="/home.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="selectFile::#selectFile.xhtml" NAME="output"
+    PATH="/selectFile.xhtml" TARGET="rules:#selectFile.xhtml"
+    TITLE="selectFile" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#*" PATH="/*" SHAPE="32,17,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#*:0" NAME="item" PATH="/*" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="home::#home.xhtml" NAME="output"
+    PATH="/home.xhtml" TARGET="rules:#home.xhtml" TITLE="home" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#*:1" PATH="/*" SHAPE="32,241,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#*:1" NAME="item" PATH="/*" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="editProfile::#userForm.xhtml" NAME="output"
+    PATH="/userForm.xhtml" TARGET="rules:#userForm.xhtml"
+    TITLE="editProfile" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#userForm.xhtml" PATH="/userForm.xhtml"
+  SHAPE="240,257,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#userForm.xhtml:0" NAME="item"
+   PATH="/userForm.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="cancel::#admin#users.xhtml" NAME="output"
+    PATH="/admin/users.xhtml" TARGET="rules:#admin#users.xhtml"
+    TITLE="cancel" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="list::#admin#users.xhtml" NAME="output1"
+    PATH="/admin/users.xhtml" TARGET="rules:#admin#users.xhtml"
+    TITLE="list" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#selectFile.xhtml" PATH="/selectFile.xhtml"
+  SHAPE="464,17,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#selectFile.xhtml:0" NAME="item"
+   PATH="/selectFile.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="success::#showFile.xhtml" NAME="output"
+    PATH="/showFile.xhtml" TARGET="rules:#showFile.xhtml"
+    TITLE="success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#signup.xhtml" PATH="/signup.xhtml"
+  SHAPE="32,385,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#signup.xhtml:0" NAME="item"
+   PATH="/signup.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="cancel::#login" NAME="output" PATH="/login"
+    TARGET="rules:#login" TITLE="cancel" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#passwordHint.xhtml"
+  PATH="/passwordHint.xhtml" SHAPE="32,497,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#passwordHint.xhtml:0" NAME="item"
+   PATH="/passwordHint.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="success::#login" NAME="output" PATH="/login"
+    TARGET="rules:#login" TITLE="success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#admin#reload.xhtml"
+  PATH="/admin/reload.xhtml" SHAPE="32,129,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#admin#reload.xhtml:0" NAME="item"
+   PATH="/admin/reload.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="success::#home.xhtml" NAME="output"
+    PATH="/home.xhtml" TARGET="rules:#home.xhtml" TITLE="success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#admin#users.xhtml" PATH="/admin/users.xhtml"
+  SHAPE="480,241,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#admin#users.xhtml:0" NAME="item"
+   PATH="/admin/users.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="success::#admin#users.xhtml" NAME="output"
+    PATH="/admin/users.xhtml" TARGET="rules:#admin#users.xhtml"
+    TITLE="success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#login" PATH="/login" SHAPE="256,401,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#showFile.xhtml" PATH="/showFile.xhtml"
+  SHAPE="672,33,0,0" model-entity="JSFProcessGroup"/>
+</PROCESS>

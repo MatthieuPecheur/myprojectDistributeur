@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+
+
+	<table-filter match-name="pompe"/>
+	<table-filter match-name="distributeur"/>
+	<table-filter match-name="ingredient"/>
+	<table-filter match-name="cocktail"/>
+	<table-filter match-name="districoktaildispo"/>
+	<table-filter match-name="districoktailtodo"/>
+	
+</hibernate-reverse-engineering>
