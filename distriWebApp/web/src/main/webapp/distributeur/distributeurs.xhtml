@@ -71,7 +71,7 @@
                         	<p:commandLink ajax="false" process="this" immediate="true" disabled="#{!adminiDistriMb.isStartedDistri(distri)}" action="#{adminiDistriMb.startDistributeur(distri)}">
                         	   <div class="stop" title="#{text['distributeur.stop']}"/>
                         	</p:commandLink>
-                        	<p:commandLink ajax="false" process="this" immediate="true" action="#{distributeurMb.getAllDistributeur()}">
+                        	<p:commandLink ajax="false" process="this" immediate="true" action="#{distributeurMb.edit(distri)}">
                         	   <div class="viewDetail" title="#{text['distributeur.detail']}"/>
                         	</p:commandLink>
                         </p:panelGrid>

@@ -15,4 +15,8 @@ import org.springframework.web.context.WebApplicationContext;
 public class ApplicationMb {
 	private static final Logger logger = LoggerFactory.getLogger(ApplicationMb.class);
 	
+	public void test(){
+		System.out.println("test");
+	}
+	
 }

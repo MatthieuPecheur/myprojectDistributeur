@@ -78,4 +78,15 @@
  <PROCESS-ITEM NAME="rules:#login" PATH="/login" SHAPE="256,401,0,0" model-entity="JSFProcessGroup"/>
  <PROCESS-ITEM NAME="rules:#showFile.xhtml" PATH="/showFile.xhtml"
   SHAPE="672,33,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#distributeurForm.xhtml"
+  PATH="/distributeurForm.xhtml" SHAPE="240,625,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#distributeurs" PATH="/distributeurs"
+  SHAPE="32,609,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#distributeurs:0" NAME="item"
+   PATH="/distributeurs" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="distributeurForm::#distributeurForm.xhtml"
+    NAME="output" PATH="/distributeurForm.xhtml"
+    TARGET="rules:#distributeurForm.xhtml" TITLE="distributeurForm" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
 </PROCESS>

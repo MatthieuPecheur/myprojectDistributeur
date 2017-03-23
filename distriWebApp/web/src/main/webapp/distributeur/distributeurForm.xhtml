@@ -5,13 +5,12 @@
 <ui:composition template="/layouts/default.xhtml">
     <ui:define name="title">#{text['distributeurForm.title']}</ui:define>
     <ui:param name="menu" value="DistriMenu"/>
-
     <ui:define name="body">
         <c:set var="delDistri" value="#{text['distributeurList.distributeur']}"/>
         <script type="text/javascript">var msgDelConfirm =
            "<h:outputFormat value="#{text['delete.confirm']}"><f:param value="#{delDistri}" /></h:outputFormat>";
         </script>
-
+cvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
         <div class="col-sm-2">
             <h2>#{text['userProfile.heading']}</h2>
             <c:choose>

@@ -14,23 +14,17 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 import com.ocpsoft.pretty.faces.annotation.URLMappings;
-
+ 	
 import be.fp.distiWebApp.webapp.enums.PrettyPatterns;
 import be.fp.distriWebApp.core.bo.DistributeurBo;
-import be.fp.distriWebApp.core.model.dto.DistributeurDto;	
+import be.fp.distriWebApp.core.model.dto.DistributeurDto;
+import be.fp.distriWebApp.webapp.action.BasePage;	
 
 @Controller
 @ManagedBean
 @Scope(value = WebApplicationContext.SCOPE_SESSION)
-@URLMappings(mappings={
-		@URLMapping(id = "distributeurDetail" , pattern = "/distributeurDetail",viewId = "/distributeur/distributeurForm.xhtml")
-})
-public class DistributeurMb implements Serializable{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3950268603385378751L;
 
+public class DistributeurMb extends BasePage implements Serializable{
 	private static final Logger logger = LoggerFactory.getLogger(DistributeurMb.class);
 	
 	@Autowired
@@ -45,9 +39,9 @@ public class DistributeurMb implements Serializable{
 		return adminDistriMb.getDistributeurList();
 	}
 	
-	private String edit(DistributeurDto distriToEdit){	
+	public String edit(DistributeurDto distriToEdit){	
 		setCurrentDistributeur(distriToEdit);
-		return PrettyPatterns.distributeurDetail.toPrettyPattern();
+		return "distributeurForm";
 	}	
 	
 	/*GETTERS AND SETTETS*/	
