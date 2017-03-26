@@ -35,7 +35,7 @@ public class RefLovs implements java.io.Serializable {
 
 	@Id
 
-	@Column(name = "dom_code", unique = true, nullable = false, length = 300)
+	@Column(name = "dom_code", unique = true, nullable = false, length = 200)
 
 	private String domCode;
 

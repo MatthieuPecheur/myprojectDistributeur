@@ -82,14 +82,26 @@
         <appfuse.version>3.5.1-SNAPSHOT</appfuse.version>
         <java.version>1.7</java.version>
         
-                <!-- Database settings -->
+        <!-- Database settings Localhost -->
+        <!-- 
         <jdbc.groupId>mysql</jdbc.groupId>
         <jdbc.artifactId>mysql-connector-java</jdbc.artifactId>
         <jdbc.version>5.1.27</jdbc.version>
         <jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
         <jdbc.url><![CDATA[jdbc:mysql://localhost:3306/distriwebapp?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8]]></jdbc.url>
         <jdbc.username>root</jdbc.username>
-        <jdbc.password>picpuce</jdbc.password>
+        <jdbc.password>picpuce</jdbc.password> 
+        
+         -->
+        
+        <!-- Database settings Rapsb -->
+        <jdbc.groupId>mysql</jdbc.groupId>
+        <jdbc.artifactId>mysql-connector-java</jdbc.artifactId>
+        <jdbc.version>5.1.27</jdbc.version>
+        <jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
+        <jdbc.url><![CDATA[jdbc:mysql://192.168.1.9:3306/distriwebapp?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8]]></jdbc.url>
+        <jdbc.username>root</jdbc.username>
+        <jdbc.password>toor</jdbc.password>
         
     </properties>
   <modules>
