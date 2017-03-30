@@ -1,15 +1,5 @@
 package be.fp.distriWebApp.core.bo.impl;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.jws.WebService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import be.fp.distriWebApp.core.bo.DistributeurBo;
 import be.fp.distriWebApp.core.bo.abstractDozerMapperBo;
 import be.fp.distriWebApp.core.enums.RefLovsEnum;
@@ -17,10 +7,19 @@ import be.fp.distriWebApp.core.model.dao.CocktailDao;
 import be.fp.distriWebApp.core.model.dao.DistributeurDao;
 import be.fp.distriWebApp.core.model.dto.CocktailDto;
 import be.fp.distriWebApp.core.model.dto.DistributeurDto;
-import be.fp.distriWebApp.core.model.eo.Cocktail;
 import be.fp.distriWebApp.core.model.eo.Distributeur;
 import be.fp.distriWebApp.core.model.eo.Districoktaildispo;
 import be.fp.distriWebApp.core.model.eo.Districoktailtodo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebService;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @WebService
@@ -90,7 +89,27 @@ public class DistributeurBoImpl extends abstractDozerMapperBo implements Distrib
 		}
 		return null;
 	}
-	
-	
-	
+
+
+	@Transactional(readOnly=false)
+	@Override
+	public void deleteDistributeur(DistributeurDto distributeurDto){
+		if(distributeurDto != null && distributeurDto.getId() > -1){
+			distributeurDao.remove(distributeurDto.getId());
+		}
+	}
+
+	@Transactional(readOnly=false)
+	@Override
+	public void saveDistributeur(DistributeurDto distributeurDto){
+		if(distributeurDto != null){
+			distributeurDao.save(mapper.map(distributeurDto,Distributeur.class));
+		}
+	}
+
+	@WebMethod public void addDistributeur(DistributeurDto distributeurDto){
+		if(distributeurDto != null){
+			distributeurDao.save(mapper.map(distributeurDto,Distributeur.class));
+		}
+	}
 }

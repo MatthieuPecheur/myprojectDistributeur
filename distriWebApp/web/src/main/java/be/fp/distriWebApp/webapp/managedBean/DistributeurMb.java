@@ -29,8 +29,7 @@ public class DistributeurMb extends BasePage implements Serializable{
 	
 	@Autowired
 	private DistributeurBo distributeurBo;
-	
-	@Autowired
+
 	AdminiDistriMb adminDistriMb;
 	
 	private DistributeurDto currentDistributeur;
@@ -42,8 +41,27 @@ public class DistributeurMb extends BasePage implements Serializable{
 	public String edit(DistributeurDto distriToEdit){	
 		setCurrentDistributeur(distriToEdit);
 		return "distributeurForm";
-	}	
-	
+	}
+	public String save(){
+		if(currentDistributeur.getId() != null)
+		distributeurBo.saveDistributeur(currentDistributeur);
+		currentDistributeur = null;
+		return "distributeurs";
+	}
+	public String delete(){
+		distributeurBo.deleteDistributeur(currentDistributeur);
+		currentDistributeur = null;
+		return "distributeurs";
+	}
+	public String cancel(){
+		currentDistributeur = null;
+		return "distributeurs";
+	}
+
+	public String add(){
+		currentDistributeur = new DistributeurDto();
+		return "distributeurForm";
+	}
 	/*GETTERS AND SETTETS*/	
 	
 	public void setSelectedDistrubeur(DistributeurDto selectedDistri){
@@ -66,5 +84,7 @@ public class DistributeurMb extends BasePage implements Serializable{
 	public void setCurrentDistributeur(DistributeurDto currentDistributeur) {
 		this.currentDistributeur = currentDistributeur;
 	}
+
+
 	
 }

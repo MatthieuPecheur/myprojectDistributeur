@@ -37,7 +37,7 @@ public class Distributeur implements java.io.Serializable {
 
 	@Column(name = "id", unique = true, nullable = false)
 
-	private int id;
+	private Integer id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fk_id_cocktail_en_cours")
@@ -80,11 +80,11 @@ public class Distributeur implements java.io.Serializable {
 	private Set<Districoktaildispo> districoktaildispos = new HashSet<Districoktaildispo>(0);
 
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
