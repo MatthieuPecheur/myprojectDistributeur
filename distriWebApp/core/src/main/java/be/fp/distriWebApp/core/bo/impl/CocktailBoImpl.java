@@ -38,6 +38,20 @@ public class CocktailBoImpl extends abstractDozerMapperBo implements CocktailBo 
 	@Autowired
 	private RefLovsDao refLovsDao;
 
+	@Transactional(readOnly=true)
+	@Override
+	public List<CocktailDto> findAllCocktail(){
+		List<CocktailDto> cocktailListDto = new ArrayList<CocktailDto>(0);
+		List<Cocktail> cocktailList = cocktailDao.getAll();
+		if(cocktailList != null){
+			for(Cocktail curCock : cocktailList){
+				cocktailListDto.add(mapper.map(curCock,CocktailDto.class));
+			}
+		}
+		return cocktailListDto;
+	}
+
+
 	@Transactional(readOnly=false)
 	@Override
 	public void createCocktail(CocktailDto coctailDto) {

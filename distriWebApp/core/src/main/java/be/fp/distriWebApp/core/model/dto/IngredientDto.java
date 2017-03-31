@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 public class IngredientDto implements java.io.Serializable {
 
-	private int id;
+	private Integer id;
 	private PompeDto pompe;
 	private String intitule;
 	private boolean alcoolise;
@@ -15,11 +15,11 @@ public class IngredientDto implements java.io.Serializable {
 	private BigDecimal quantitePleine;
 	private BigDecimal quantiteRestante;
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

@@ -1,0 +1,78 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/layouts/default.xhtml">
+    <ui:define name="title">#{text['ingredientList.title']}</ui:define>
+    <ui:param name="menu" value="IngredMenu"/>
+
+    <ui:define name="body">
+        <div class="col-sm-10">
+            <h2>#{text['ingredientList.heading']}</h2>
+
+            <h:form id="editIngredient">
+
+                <div id="actions" class="btn-group">
+                    <!-- <script> shows up here and causes square corners on the Add button below -->
+                    <h:commandButton action="#{cocktailMb.addIngredient}" value="#{text['button.add']}" id="add"
+                                     styleClass="btn btn-primary">
+                        <f:param name="from" value="ingredients"/>
+                    </h:commandButton>
+                    <h:commandButton value="#{text['button.done']}" action="home" id="cancel"
+                                     immediate="true" styleClass="btn btn-default">
+                    </h:commandButton>
+                </div>
+
+                <p:dataTable id="ingredients" var="ingred" value="#{cocktailMb.allIngredient}" sortBy="#{ingred.id}"
+                             paginator="true" rows="25"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15">
+                    <p:column style="width: 10%">
+                        <f:facet name="header">
+                            <p:column sortBy="id">
+                                <h:outputText value="#{text['ingredient.id']}"/>
+                            </p:column>
+                        </f:facet>
+                        <h:outputText value="#{ingred.id}"/>
+                    </p:column>
+                    <p:column style="width: 34%">
+                        <f:facet name="header">
+                            <p:column sortBy="intitule">
+                                <h:outputText value="#{text['ingredient.intitule']}"/>
+                            </p:column>
+                        </f:facet>
+                        <h:outputText value="#{ingred.intitule}"/>
+                    </p:column>
+                    <p:column style="width: 34%">
+                        <f:facet name="header">
+                            <p:column sortBy="marque">
+                                <h:outputText value="#{text['ingredient.marque']}"/>
+                            </p:column>
+                        </f:facet>
+                        <h:outputText value="#{ingred.marque}"/>
+                    </p:column>
+                    <p:column style="width: 10%">
+                        <f:facet name="header">
+                            <p:column sortBy="aclolise">
+                                <h:outputText value="#{text['ingredient.aclolise']}"/>
+                            </p:column>
+                        </f:facet>
+                        <h:outputText value="#{ingred.alcoolise}"/>
+                    </p:column>
+                     <p:column style="width: 20%">
+                        <f:facet name="header">
+                            <p:column>
+                                <h:outputText value="#{text['ingredient.action']}"/>
+                            </p:column>
+                        </f:facet>
+                        <p:panelGrid columns="3">
+                            <p:commandLink ajax="false" process="this" immediate="true" action="#{cocktailMb.editIngredient(ingred)}">
+                                <div class="viewDetail" title="#{text['ingredient.detail']}"/>
+                            </p:commandLink>
+                        </p:panelGrid>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
+</html>

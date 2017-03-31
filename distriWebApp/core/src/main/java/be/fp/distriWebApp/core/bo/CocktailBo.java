@@ -11,6 +11,9 @@ import be.fp.distriWebApp.core.model.dto.IngredientcocktailDto;
 
 @WebService
 public interface CocktailBo {
+
+	@WebMethod public List<CocktailDto> findAllCocktail();
+
 	@WebMethod public void createCocktail(@WebParam(name="coctailDto")CocktailDto coctailDto);
 	@WebMethod public String getCocktailToString(@WebParam(name="coctailDto")CocktailDto coctailDto);
 	@WebMethod public byte[] getCocktailToArrayByte(@WebParam(name="coctailDto")CocktailDto cocktailDto);

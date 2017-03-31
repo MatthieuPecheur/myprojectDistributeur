@@ -107,6 +107,8 @@ public class DistributeurBoImpl extends abstractDozerMapperBo implements Distrib
 		}
 	}
 
+	@Transactional(readOnly=false)
+	@Override
 	@WebMethod public void addDistributeur(DistributeurDto distributeurDto){
 		if(distributeurDto != null){
 			distributeurDao.save(mapper.map(distributeurDto,Distributeur.class));
