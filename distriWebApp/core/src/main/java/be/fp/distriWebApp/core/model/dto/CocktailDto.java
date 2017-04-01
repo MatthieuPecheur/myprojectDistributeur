@@ -17,18 +17,18 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class CocktailDto implements java.io.Serializable {
 
-	private int id;
+	private Integer id;
 	private String intitule;
 	private Float prix;
 	private Integer color;
 
 	private Set<IngredientcocktailDto> ingredientcocktails = new HashSet<IngredientcocktailDto>(0);
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 	
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public String getIntitule() {

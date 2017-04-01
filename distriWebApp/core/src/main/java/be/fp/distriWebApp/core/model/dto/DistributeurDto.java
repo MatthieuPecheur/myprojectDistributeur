@@ -7,7 +7,7 @@ import be.fp.distriWebApp.core.model.eo.Cocktail;
 
 public class DistributeurDto implements java.io.Serializable {
 
-	private int id;
+	private Integer id;
 	private CocktailDto cocktailEnCours;
 	private RefLovsDto etat_lovs;
 	private int numero;
@@ -19,11 +19,11 @@ public class DistributeurDto implements java.io.Serializable {
 	private Set<DistricoktaildispoDto> districoktaildispos = new HashSet<DistricoktaildispoDto>(0);
 	private Set<PompeDto> pompes = new HashSet<PompeDto>(0);
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

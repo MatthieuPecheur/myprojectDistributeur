@@ -13,6 +13,11 @@
             <Item name="FileUpload" title="menu.selectFile" page="/selectFile"/>
         </Menu>
         <Menu name="DistriMenu" title="menu.distributeur" description="Distri Menu" roles="ROLE_ADMIN" page="/distributeur/distributeurs"/>
+        <Menu name="CocktailMenu" title="menu.cocktailGen" description="Cocktail Menu" roles="ROLE_ADMIN" page="/cocktail/cocktails.xhtml">
+            <Item name="IngredMenu" title="menu.ingredient" page="/cocktail/ingredients.xhtml"/>
+            <Item name="CockMenu" title="menu.cocktail" page="/cocktail/cocktails.xhtml"/>
+        </Menu>
+
         <Menu name="Logout" title="user.logout" page="/logout" roles="ROLE_ADMIN,ROLE_USER"/>
     </Menus>
 </MenuConfig>

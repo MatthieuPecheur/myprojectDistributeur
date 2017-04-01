@@ -113,6 +113,13 @@
             <to-view-id>/distributeurForm.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/distributeurs/distributeurForm</from-view-id>
+        <navigation-case>
+            <from-outcome>distributeurs</from-outcome>
+            <to-view-id>/distributeurs.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
 
     <!-- Add additional rules here -->
 

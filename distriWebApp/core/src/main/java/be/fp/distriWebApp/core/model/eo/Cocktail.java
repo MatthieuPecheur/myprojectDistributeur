@@ -33,7 +33,7 @@ public class Cocktail implements java.io.Serializable {
 	@Id
 	@Column(name = "id", unique = true, nullable = false)
 
-	private int id;
+	private Integer id;
 
 	@Column(name = "intitule")
 
@@ -50,11 +50,11 @@ public class Cocktail implements java.io.Serializable {
 	@OneToMany(fetch = FetchType.LAZY)
 	private Set<Ingredientcocktail> ingredientcocktails = new HashSet<Ingredientcocktail>(0);
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

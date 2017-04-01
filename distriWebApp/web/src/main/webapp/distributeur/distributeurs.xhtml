@@ -3,7 +3,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
 <ui:composition template="/layouts/default.xhtml">
     <ui:define name="title">#{text['distributeurList.title']}</ui:define>
-    <ui:param name="menu" value="DistriMenu"/>
+    <ui:param name="menu" value="CockMenu"/>
 
     <ui:define name="body">
         <div class="col-sm-10">
@@ -13,9 +13,9 @@
 
                 <div id="actions" class="btn-group">
                     <!-- <script> shows up here and causes square corners on the Add button below -->
-                    <h:commandButton action="#{adminiDistriMb.add}" value="#{text['button.add']}" id="add"
+                    <h:commandButton action="#{distributeurMb.add}" value="#{text['button.add']}" id="add"
                                      styleClass="btn btn-primary">
-                        <f:param name="from" value="list"/>
+                        <f:param name="from" value="distributeurs"/>
                     </h:commandButton>
                     <h:commandButton value="#{text['button.done']}" action="home" id="cancel"
                                      immediate="true" styleClass="btn btn-default">
