@@ -26,4 +26,8 @@ To get started, complete the following steps:
 5. More information can be found at:
 
     http://appfuse.org/display/APF/AppFuse+QuickStart
-
+    
+    
+ For distrib install  : 
+ 
+http://rxtx.qbang.org/wiki/index.php/Installation_for_Windows
