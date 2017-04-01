@@ -10,5 +10,7 @@
 	<table-filter match-name="cocktail"/>
 	<table-filter match-name="districoktaildispo"/>
 	<table-filter match-name="districoktailtodo"/>
+	<table-filter match-name="ingredientcocktail"/>
+	
 	
 </hibernate-reverse-engineering>

@@ -33,6 +33,11 @@ public class Ingredientcocktail implements java.io.Serializable,Comparable<Ingre
 	private int id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "fk_id_cocktail", nullable = false)
+
+	private Cocktail cocktail;
+
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fk_id_ingredient", nullable = false)
 
 	private Ingredient ingredient;
@@ -53,6 +58,13 @@ public class Ingredientcocktail implements java.io.Serializable,Comparable<Ingre
 		this.id = id;
 	}
 
+	public Cocktail getCocktail() {
+		return cocktail;
+	}
+
+	public void setCocktail(Cocktail cocktail) {
+		this.cocktail = cocktail;
+	}
 
 	public Ingredient getIngredient() {
 		return ingredient;

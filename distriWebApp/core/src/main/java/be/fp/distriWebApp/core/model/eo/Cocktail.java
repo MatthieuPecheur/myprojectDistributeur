@@ -28,7 +28,10 @@ public class Cocktail implements java.io.Serializable {
 	public static final String INTITULE = "intitule";
 	public static final String PRIX = "prix";
 	public static final String COLOR = "color";
+	public static final String DISTRIBUTEURS = "distributeurs";
+	public static final String DISTRICOKTAILDISPOS = "districoktaildispos";
 	public static final String INGREDIENTCOCKTAILS = "ingredientcocktails";
+	public static final String DISTRICOKTAILTODOS = "districoktailtodos";
 
 	@Id
 	@Column(name = "id", unique = true, nullable = false)
@@ -48,7 +51,20 @@ public class Cocktail implements java.io.Serializable {
 	private Integer color;
 
 	@OneToMany(fetch = FetchType.LAZY)
+
+	private Set<Distributeur> distributeurs = new HashSet<Distributeur>(0);
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cocktail")
+
+	private Set<Districoktaildispo> districoktaildispos = new HashSet<Districoktaildispo>(0);
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cocktail")
+
 	private Set<Ingredientcocktail> ingredientcocktails = new HashSet<Ingredientcocktail>(0);
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cocktail")
+
+	private Set<Districoktailtodo> districoktailtodos = new HashSet<Districoktailtodo>(0);
 
 	public Integer getId() {
 		return id;
@@ -82,12 +98,36 @@ public class Cocktail implements java.io.Serializable {
 		this.color = color;
 	}
 
+	public Set<Distributeur> getDistributeurs() {
+		return distributeurs;
+	}
+
+	public void setDistributeurs(Set<Distributeur> distributeurs) {
+		this.distributeurs = distributeurs;
+	}
+
+	public Set<Districoktaildispo> getDistricoktaildispos() {
+		return districoktaildispos;
+	}
+
+	public void setDistricoktaildispos(Set<Districoktaildispo> districoktaildispos) {
+		this.districoktaildispos = districoktaildispos;
+	}
+
 	public Set<Ingredientcocktail> getIngredientcocktails() {
 		return ingredientcocktails;
 	}
 
 	public void setIngredientcocktails(Set<Ingredientcocktail> ingredientcocktails) {
 		this.ingredientcocktails = ingredientcocktails;
+	}
+
+	public Set<Districoktailtodo> getDistricoktailtodos() {
+		return districoktailtodos;
+	}
+
+	public void setDistricoktailtodos(Set<Districoktailtodo> districoktailtodos) {
+		this.districoktailtodos = districoktailtodos;
 	}
 
 	/**
