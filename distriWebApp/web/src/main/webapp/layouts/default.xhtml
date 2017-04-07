@@ -58,6 +58,21 @@
     </div>
 
     <ui:insert name="scripts"/>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            // DEPENDENCY: https://github.com/flatlogic/bootstrap-tabcollapse
+            $('.content-tabs').tabCollapse();
+
+            // initialize tab function
+            $('.nav-tabs a').click(function(e) {
+                e.preventDefault();
+                $(this).tab('show');
+            });
+
+        });
+    </script>
     </body>
 </f:view>
 </html>

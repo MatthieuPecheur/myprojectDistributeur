@@ -44,22 +44,60 @@ public class CocktailMb extends BasePage implements Serializable{
 
 	public String editCocktail(CocktailDto cocktailToEdit){
 		setCurrentCocktail(cocktailToEdit);
-		return "CocktailForm";
+		return "cocktailForm";
 	}
+
+	public String addCocktail(){
+		currentCocktail = new CocktailDto();
+		return "cocktailForm";
+	}
+
+	public String saveCocktail(){
+		if(currentCocktail.getId() != null){
+			cocktailBo.saveCocktail(currentCocktail);
+		}
+		return "cocktailForm";
+	}
+	public String deleteCocktail(){
+		if(currentCocktail  != null){
+			cocktailBo.deleteCocktail(currentCocktail);
+		}
+		currentCocktail = null;
+		return "cocktails";
+	}
+
+	public String cancelCocktail(){
+		currentCocktail = null;
+		return "cocktails";
+	}
+
 	/*INGREDIENT*/
+
 
 	public List<IngredientDto> getAllIngredient(){
 		List<IngredientDto> ingredientsDto = ingredientBo.findAllIngredients();
 		return ingredientsDto;
 	}
-	
+
+	public List<IngredientDto> getAllIngredientSoft(){
+		List<IngredientDto> ingredientsDto = ingredientBo.findAllIngredientsSoft();
+		return ingredientsDto;
+	}
+
+	public List<IngredientDto> getAllIngredientAlcolise(){
+		List<IngredientDto> ingredientsDto = ingredientBo.findAllIngredientsAlcolise();
+		return ingredientsDto;
+	}
+
 	public String editIngredient(IngredientDto ingredientToEdit){
 		setCurrentIngredient(ingredientToEdit);
-		return "IngredientForm";
+		return "ingredientForm";
 	}
 	public String saveIngredient(){
 		if(currentIngredient.getId() != null){
 			ingredientBo.saveDistributeur(currentIngredient);
+		}else{
+			ingredientBo.addIngredient(currentIngredient);
 		}
 		currentIngredient = null;
 		return "ingredients";
@@ -76,9 +114,10 @@ public class CocktailMb extends BasePage implements Serializable{
 		return "ingredients";
 	}
 
-	public String addIngredient(){
+	public String addIngredient(boolean alcolise){
 		currentIngredient = new IngredientDto();
-		return "distributeurForm";
+		currentIngredient.setAlcoolise(alcolise);
+		return "ingredientForm";
 	}
 	/*GETTERS AND SETTETS*/
 

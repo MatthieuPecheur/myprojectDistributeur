@@ -54,14 +54,20 @@ public class CocktailBoImpl extends abstractDozerMapperBo implements CocktailBo 
 
 	@Transactional(readOnly=false)
 	@Override
-	public void createCocktail(CocktailDto coctailDto) {
-		Cocktail newCocktail = new Cocktail();
-		
+	public void saveCocktail(CocktailDto coctailDto) {
 		if(coctailDto != null){
-			newCocktail = mapper.map(coctailDto, Cocktail.class);
-			newCocktail = cocktailDao.save(newCocktail);
+			cocktailDao.save( mapper.map(coctailDto, Cocktail.class));
 		}
 	}
+
+	@Transactional(readOnly=false)
+	@Override
+	public void deleteCocktail(CocktailDto coctailDto) {
+		if(coctailDto != null){
+			cocktailDao.remove(mapper.map(coctailDto, Cocktail.class));
+		}
+	}
+
 	@Transactional(readOnly=true)
 	@Override
 	public String getCocktailToString(CocktailDto cocktailDto)

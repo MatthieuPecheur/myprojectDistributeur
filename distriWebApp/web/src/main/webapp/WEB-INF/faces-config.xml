@@ -121,6 +121,36 @@
         </navigation-case>
     </navigation-rule>
 
+    <navigation-rule>
+        <from-view-id>/ingredients</from-view-id>
+        <navigation-case>
+            <from-outcome>ingredientForm</from-outcome>
+            <to-view-id>/ingredientForm.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/cocktail/ingredientForm</from-view-id>
+        <navigation-case>
+            <from-outcome>ingredients</from-outcome>
+            <to-view-id>/ingredients.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/cocktails</from-view-id>
+        <navigation-case>
+            <from-outcome>cocktailForm</from-outcome>
+            <to-view-id>/cocktail/cocktailForm.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/cocktail/cocktailForm</from-view-id>
+        <navigation-case>
+            <from-outcome>cocktails</from-outcome>
+            <to-view-id>/cocktails.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+
     <!-- Add additional rules here -->
 
     <managed-bean>

@@ -14,11 +14,14 @@ public interface CocktailBo {
 
 	@WebMethod public List<CocktailDto> findAllCocktail();
 
-	@WebMethod public void createCocktail(@WebParam(name="coctailDto")CocktailDto coctailDto);
-	@WebMethod public String getCocktailToString(@WebParam(name="coctailDto")CocktailDto coctailDto);
-	@WebMethod public byte[] getCocktailToArrayByte(@WebParam(name="coctailDto")CocktailDto cocktailDto);
+	@WebMethod public void saveCocktail(@WebParam(name = "coctailDto") CocktailDto coctailDto);
+	@WebMethod public void deleteCocktail(@WebParam(name = "coctailDto") CocktailDto coctailDto);
 	@WebMethod public boolean remplirBouteille(@WebParam(name="idPompe")int idPompe);
 	@WebMethod public int getNbreCocktailPosIngredient(@WebParam(name="coctailDto") CocktailDto cocktailDto);
 	@WebMethod public List<IngredientcocktailDto> verifieCocktailSotck(@WebParam(name="coctailDto")CocktailDto cocktailDto);
 	@WebMethod public void retireQuantiteIngredientcocktail(@WebParam(name="ingredCockDto")IngredientcocktailDto ingredCockDto);
+
+	/*utils*/
+	@WebMethod public String getCocktailToString(@WebParam(name="coctailDto")CocktailDto coctailDto);
+	@WebMethod public byte[] getCocktailToArrayByte(@WebParam(name="coctailDto")CocktailDto cocktailDto);
 }

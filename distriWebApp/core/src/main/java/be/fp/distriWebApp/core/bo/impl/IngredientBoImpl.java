@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.jws.WebMethod;
 import javax.jws.WebService;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,8 +22,8 @@ public class IngredientBoImpl extends abstractDozerMapperBo implements Ingredien
 	@Autowired IngredientDao ingredientDao;
 
 	@Transactional(readOnly=true)
-	@Override
-	public List<IngredientDto> findAllIngredients(){
+		 @Override
+		 public List<IngredientDto> findAllIngredients(){
 		List<IngredientDto> ingredientsDto = new ArrayList<IngredientDto>(0);
 		List<Ingredient> ingredients = ingredientDao.getAll();
 		if(ingredients != null){
@@ -33,6 +34,36 @@ public class IngredientBoImpl extends abstractDozerMapperBo implements Ingredien
 
 		return ingredientsDto;
 	}
+
+
+	@Transactional(readOnly=true)
+	@Override
+	public List<IngredientDto> findAllIngredientsSoft(){
+		List<IngredientDto> ingredientsDto = new ArrayList<IngredientDto>(0);
+		List<Ingredient> ingredients = ingredientDao.findAllDistinctAlcool(false);
+		if(ingredients != null){
+			for(Ingredient currIngredient : ingredients){
+				ingredientsDto.add(mapper.map(currIngredient,IngredientDto.class));
+			}
+		}
+
+		return ingredientsDto;
+	}
+
+	@Transactional(readOnly=true)
+	@Override
+	public List<IngredientDto> findAllIngredientsAlcolise(){
+		List<IngredientDto> ingredientsDto = new ArrayList<IngredientDto>(0);
+		List<Ingredient> ingredients = ingredientDao.findAllDistinctAlcool(true);
+		if(ingredients != null){
+			for(Ingredient currIngredient : ingredients){
+				ingredientsDto.add(mapper.map(currIngredient,IngredientDto.class));
+			}
+		}
+
+		return ingredientsDto;
+	}
+
 	@Transactional(readOnly=false)
 	@Override
 	public void saveDistributeur(IngredientDto ingredientDto){

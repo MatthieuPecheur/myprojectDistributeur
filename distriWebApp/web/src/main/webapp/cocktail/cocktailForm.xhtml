@@ -1,0 +1,85 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="/layouts/default.xhtml">
+    <ui:define name="title">#{text['cocktailForm.title']}</ui:define>
+    <ui:param name="menu" value="DistriMenu"/>
+    <ui:define name="body">
+
+
+        <c:set var="delCocktail" value="#{text['cocktailList.cocktail']}"/>
+        <script type="text/javascript">var msgDelConfirm =
+           "<h:outputFormat value="#{text['delete.confirm']}"><f:param value="#{delCocktail}" /></h:outputFormat>";
+        </script>
+
+        <ul class="nav nav-tabs content-tabs" id="maincontent" role="tablist">
+	          <li class="active"><a href="#infoGen" role="tab" data-toggle="tab">#{text['cocktailForm.tab.infogeneneral']}</a></li>
+	          <li><a href="#ingredientsList" role="tab" data-toggle="tab">#{text['cocktailForm.tab.ingredientsList']}</a></li>
+	          <li><a href="#ingredientParam" role="tab" data-toggle="tab">#{text['cocktailForm.tab.ingredientParam']}</a></li>
+
+        </ul>
+
+      <div class="tab-content">
+
+          <div class="tab-pane fade in active" id="infoGen">
+             <p>    
+	            <h:form id="disdtriForm" styleClass="well" autocomplete="off">
+	                <h:inputHidden value="#{cocktailMb.currentCocktail.id}" id="id"/>
+
+
+	                <c:set var="addText" value="#{text['button.add']}"/>
+	
+	                <div class="row">
+						<div class="col-sm-6 form-group">
+							<h:outputLabel styleClass="control-label" for="intitule" value="#{text['cocktail.intitule']}"/>
+							<h:inputText styleClass="form-control" value="#{cocktailMb.currentCocktail.intitule}" id="intitule" maxlength="50"  required="true"/>
+							<p:message for="intitule"/>
+						</div>
+
+	                    <div class="col-sm-6 form-group">
+	                        <h:outputLabel styleClass="control-label" for="prix" value="#{text['cocktail.prix']}"/>
+	                        <h:inputText styleClass="form-control" id="prix" value="#{cocktailMb.currentCocktail.prix}" maxlength="50" required="true"/>
+	                        <p:message for="prix"/>
+	                    </div>
+	                </div>
+
+					<div class="row">
+						<div class="col-sm-6 form-group">
+							<h:outputLabel styleClass="control-label" for="couleur" value="#{text['cocktail.couleur']}"/>
+
+							<h:inputText styleClass="form-control" value="#{cocktailMb.currentCocktail.color}" type="color" id="couleur" required="false"/>
+							<p:message for="couleur"/>
+						</div>
+
+					</div>
+
+	                <div class="form-group form-actions">
+	                    <h:commandButton value="#{text['button.save']}" action="#{cocktailMb.saveCocktail}" styleClass="btn btn-primary"/>
+	
+	                    <!-- Todo: hide this button when the user's id is not assigned. Wrapping it with <c:if test="${not empty userForm.user.id}"> or
+	                         rendered="${not empty userForm.user.id}" causes this button to not call the delete() method in UserForm.  -->
+
+						<c:if test="${not empty cocktailMb.currentCocktail.id}">
+							<h:commandButton value="#{text['button.delete']}" action="#{cocktailMb.deleteCocktail}"
+											 styleClass="btn btn-default" onclick="return confirmMessage(msgDelConfirm)"/>
+						</c:if>
+
+	                    <h:commandButton value="#{text['button.cancel']}" action="#{cocktailMb.cancelCocktail}" immediate="true"
+	                        styleClass="btn btn-default"/>
+	                </div>
+	            </h:form>
+	      
+             </p>
+          </div><!--/.tab-pane -->
+
+          <div class="tab-pane fade" id="ingredientsList">
+             <p>State Content : ...</p>
+          </div><!--/.tab-pane -->
+		  <div class="tab-pane fade" id="ingredientParam">
+             <p>Mainetance Content : ...</p>
+          </div><!--/.tab-pane -->
+       </div><!--/.tab-content -->
+</ui:define>
+</ui:composition>
+</html>
