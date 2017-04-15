@@ -19,4 +19,7 @@ public interface DistributeurBo {
 	@WebMethod public void deleteDistributeur(@WebParam(name="DistributeurDto")DistributeurDto distributeurDto);
 	@WebMethod public void saveDistributeur(@WebParam(name="DistributeurDto")DistributeurDto distributeurDto);
 	@WebMethod public void addDistributeur(@WebParam(name="DistributeurDto")DistributeurDto distributeurDto);
+
+	/*technical*/
+
 }

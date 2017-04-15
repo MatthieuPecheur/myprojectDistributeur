@@ -10,7 +10,7 @@ public class IngredientDto implements java.io.Serializable {
 	private PompeDto pompe;
 	private String intitule;
 	private boolean alcoolise;
-	private int degreAlcool;
+	private Integer degreAlcool;
 	private String marque;
 	private BigDecimal quantitePleine;
 	private BigDecimal quantiteRestante;
@@ -47,11 +47,11 @@ public class IngredientDto implements java.io.Serializable {
 		this.alcoolise = alcoolise;
 	}
 
-	public int getDegreAlcool() {
+	public Integer getDegreAlcool() {
 		return degreAlcool;
 	}
 
-	public void setDegreAlcool(int degreAlcool) {
+	public void setDegreAlcool(Integer degreAlcool) {
 		this.degreAlcool = degreAlcool;
 	}
 

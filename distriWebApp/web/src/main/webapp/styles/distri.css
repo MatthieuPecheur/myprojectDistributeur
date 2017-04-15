@@ -1,23 +1,23 @@
 .start {
 	background: url(../images/start.png) no-repeat center;
 	height: 24px;
-	width: : 24px;
+	width: 24px;
 	border: none !important;
 }
 .stop {
 	background: url(../images/stop.png) no-repeat center;
 	height: 24px;
-	width: : 24px;
+	width: 24px;
 	border: none !important;
 }
 .viewDetail {
 	background: url(../images/detail.png) no-repeat center;
 	height: 24px;
-	width: : 24px;
+	width: 24px;
 	border: none !important;
 }
 
 a:hover, a:focus {
-    color: yellow;
+    color: #CD0A0A;
     text-decoration: underline;
 }

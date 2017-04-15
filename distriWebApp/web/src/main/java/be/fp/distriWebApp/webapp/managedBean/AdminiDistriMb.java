@@ -54,15 +54,25 @@ public class AdminiDistriMb implements Serializable{
 	}
 	
 	public boolean isStartedDistri(DistributeurDto currentDistri){
-		return true;
+		DistributeurTechnical currTechn = getTechnicalByDistributeurDto(currentDistri);
+		if(currTechn != null){
+			return currTechn.isEtatMarche();
+		}
+		return false;
 	}
 	
 	public void startDistributeur(DistributeurDto currentDistri){
-
+		if(!isStartedDistri(currentDistri)){
+			DistributeurTechnical currTechn = getTechnicalByDistributeurDto(currentDistri);
+			currTechn.startDistributeur();
+		}
 	}
 	
 	public void stopDistributeur(DistributeurDto currentDistri){
-	
+		if(isStartedDistri(currentDistri)){
+			DistributeurTechnical currTechn = getTechnicalByDistributeurDto(currentDistri);
+			currTechn.stopDistributeur();
+		}
 	}
 	
 	public void clearDistributeurList(){
@@ -75,18 +85,21 @@ public class AdminiDistriMb implements Serializable{
 	private List<DistributeurDto> getAllDistributeur(){		
 		return distributeurBo.getAllDistributeur();
 	}
-	
-	public void startDistributeur(DistributeurTechnical distributeurTechnical){
-		if(distributeurTechnical != null){
-			distributeurTechnical.startReadSerial();
-		}
-	}
+
 	
 	public void add(){
 		
 	}
-	
-	
+
+	public DistributeurTechnical getTechnicalByDistributeurDto(DistributeurDto distriDto){
+		for(DistributeurTechnical curTechnical : distributeurTechnList){
+			if(curTechnical.getDistributeur().getId().equals(distriDto.getId())){
+				return curTechnical;
+			}
+		}
+		return null;
+	}
+
 	/*GETTERS AND SETTETS*/
 		
 	public DistributeurBo getDistributeurBo() {
@@ -113,4 +126,7 @@ public class AdminiDistriMb implements Serializable{
 	public void setDistributeurTechnList(List<DistributeurTechnical> distributeurTechnList) {
 		this.distributeurTechnList = distributeurTechnList;
 	}
+
+
+
 }

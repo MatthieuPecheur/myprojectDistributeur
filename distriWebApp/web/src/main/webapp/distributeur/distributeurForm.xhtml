@@ -7,14 +7,18 @@
     <ui:param name="menu" value="DistriMenu"/>
     <ui:define name="body">
         <c:set var="delDistri" value="#{text['distributeurList.distributeur']}"/>
+		<c:set var="distri" value="#{distributeurMb.currentDistributeur}"/>
         <script type="text/javascript">var msgDelConfirm =
            "<h:outputFormat value="#{text['delete.confirm']}"><f:param value="#{delDistri}" /></h:outputFormat>";
         </script>
         
         <ul class="nav nav-tabs content-tabs" id="maincontent" role="tablist">
 	          <li class="active"><a href="#infoGen" role="tab" data-toggle="tab">#{text['distributeurForm.tab.infogeneneral']}</a></li>
-	          <li><a href="#etat" role="tab" data-toggle="tab">#{text['distributeurForm.tab.etatDistri']}</a></li>
-	          <li><a href="#maintenance" role="tab" data-toggle="tab">#{text['distributeurForm.tab.maintenance']}</a></li>
+			  <c:if test="${adminiDistriMb.getTechnicalByDistributeurDto(distri).etatMarche}">
+				  <li><a href="#etat" role="tab" data-toggle="tab">#{text['distributeurForm.tab.etatDistri']}</a></li>
+				  <li><a href="#maintenance" role="tab" data-toggle="tab">#{text['distributeurForm.tab.maintenance']}</a></li>
+			  </c:if>
+
 	          <!--li class="dropdown">
 	             <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
 	             <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">

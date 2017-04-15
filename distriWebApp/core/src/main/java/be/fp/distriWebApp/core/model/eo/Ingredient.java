@@ -32,7 +32,7 @@ public class Ingredient implements java.io.Serializable {
 
 	@Id
 
-	@Column(name = "id", unique = true, nullable = false)
+	@Column(name = "id", unique = true, nullable = false )
 
 	private Integer id;
 
@@ -51,7 +51,7 @@ public class Ingredient implements java.io.Serializable {
 
 	@Column(name = "degre_alcool", nullable = false)
 
-	private int degreAlcool;
+	private Integer degreAlcool;
 
 	@Column(name = "marque", nullable = false, length = 500)
 
@@ -97,11 +97,11 @@ public class Ingredient implements java.io.Serializable {
 		this.alcoolise = alcoolise;
 	}
 
-	public int getDegreAlcool() {
+	public Integer getDegreAlcool() {
 		return degreAlcool;
 	}
 
-	public void setDegreAlcool(int degreAlcool) {
+	public void setDegreAlcool(Integer degreAlcool) {
 		this.degreAlcool = degreAlcool;
 	}
 

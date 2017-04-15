@@ -25,22 +25,18 @@ public class DistributeurTechnical {
 
 	private DistributeurDto distributeur;
 	
-
-	private Set<Cocktail> coktailsDispo = new HashSet<Cocktail>();
-	private LinkedList<Cocktail> coktailsTODO = new LinkedList<Cocktail>();
-	private Set<Ingredient> ingredientDispo = new HashSet<Ingredient>();
-
 	private Set<Cocktail> cocktailDipso = new HashSet<Cocktail>();
 	
 	private ServerSocket sServerAtmega ;
 	
 	private DistributeurServerAtmega distriServerAtmega;
-	private boolean cocktailEnCours = false;
+	private SerialCommunicationRxtx serialCommunication;
+
 	 		
 
 	public DistributeurTechnical(DistributeurDto distriDto)
 	{
-		etatMarche = true;
+		etatMarche = false;
 		distributeur = distriDto;
 		distriServerAtmega = new DistributeurServerAtmega(distriDto);	
 	}
@@ -56,18 +52,6 @@ public class DistributeurTechnical {
 	public void setEtatMarche(boolean etatMarche) {
 		this.etatMarche = etatMarche;
 	}
-	public Set<Cocktail> getManagerCocktail() {
-		return coktailsDispo;
-	}
-	public void setManagerCocktail(Set<Cocktail> managerCocktail) {
-		this.coktailsDispo = managerCocktail;
-	}
-	public Set<Ingredient> getIngredientDispo() {
-		return ingredientDispo;
-	}
-	public void setIngredientDispo(Set<Ingredient> ingredientDispo) {
-		this.ingredientDispo = ingredientDispo;
-	}
 
 	public DistributeurServerAtmega getDistiClientAtmega() {
 		return distriServerAtmega;
@@ -76,13 +60,17 @@ public class DistributeurTechnical {
 		this.distriServerAtmega = distiClientAtmega;
 	}
 	
-	public LinkedList<Cocktail> getCoktailsTODO() {
-		return coktailsTODO;
+
+	/*Manage element for distributeur*/
+
+	public void startDistributeur(){
+		startSerialCommunication();
 	}
-	public void setCoktailsTODO(LinkedList<Cocktail> coktailsTODO) {
-		this.coktailsTODO = coktailsTODO;
+
+	public void stopDistributeur(){
+		stopSerialCommunication();
 	}
-	
+
 	public void startServerAtmega()
 	{
 		try {
@@ -96,14 +84,27 @@ public class DistributeurTechnical {
 			e.printStackTrace();
 		}	
 	}
-	public void startReadSerial()
+	public void startSerialCommunication()
 	{
 		try {
-			(new SerialCommunicationRxtx()).connect("COM3");
+			if(serialCommunication == null){
+				serialCommunication = new SerialCommunicationRxtx("COM3");
+			}
+			if(!serialCommunication.isStarted()){
+				serialCommunication.connect();
+			}
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
+	}
+
+	public void stopSerialCommunication(){
+		if(serialCommunication != null && serialCommunication.isStarted()){
+			serialCommunication.unConnect();
+		}
+
 	}
 	public void stopServerAtmega()
 	{
@@ -119,20 +120,25 @@ public class DistributeurTechnical {
 	public void stopAllServerTablette()
 	{
 		stopServerAtmega();
-	}	
-
-	public void setCocktailDipso(Set<Cocktail> cocktailDipso) {
-		this.cocktailDipso = cocktailDipso;
-	}
-	public Set<Cocktail> getCocktailDipso() {
-		return cocktailDipso;
-	}
-	public boolean isCocktailEnCours() {
-		return cocktailEnCours;
-	}
-	public void setCocktailEnCours(boolean cocktailEnCours) {
-		this.cocktailEnCours = cocktailEnCours;
 	}
 
-	
+
+	/* Getters and setters*/
+
+
+	public DistributeurDto getDistributeur() {
+		return distributeur;
+	}
+
+	public void setDistributeur(DistributeurDto distributeur) {
+		this.distributeur = distributeur;
+	}
+
+	public SerialCommunicationRxtx getSerialCommunication() {
+		return serialCommunication;
+	}
+
+	public void setSerialCommunication(SerialCommunicationRxtx serialCommunication) {
+		this.serialCommunication = serialCommunication;
+	}
 }
