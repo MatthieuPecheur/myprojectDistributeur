@@ -22,6 +22,9 @@ public class SerialCommunicationRxtx
     private static Thread readThread;
     private static Thread writeThread;
 
+    private static byte[] bufferRead = new byte[2024];
+    private static int lenRead = -1;
+
 
     public SerialCommunicationRxtx(String serialPort)
     {
@@ -123,13 +126,12 @@ public class SerialCommunicationRxtx
         
         public void run ()
         {
-            byte[] buffer = new byte[1024];
-            int len = -1;
+
             try
             {
-                while ( ( len = this.in.read(buffer)) > -1 && isReadStarted == true)
+                while ( ( lenRead = this.in.read(bufferRead)) > -1 && isReadStarted == true)
                 {
-                    System.out.print(new String(buffer,0,len));
+                    System.out.print(new String(bufferRead,0,lenRead));
                 }
             }
             catch ( IOException e )
@@ -154,7 +156,7 @@ public class SerialCommunicationRxtx
             try
             {                
                 int c = 0;
-                while (( c = System.in.read()) > -1 && isWriteStarted == true)
+                while (( lenRead = System.in.read()) > -1 && isWriteStarted == true)
                 {
                     this.out.write(c);
                 }                
@@ -214,19 +216,35 @@ public class SerialCommunicationRxtx
         this.writeThread = writeThread;
     }
 
-    public static boolean isReadStarted() {
+    public boolean isReadStarted() {
         return isReadStarted;
     }
 
-    public static void setIsReadStarted(boolean isReadStarted) {
+    public void setIsReadStarted(boolean isReadStarted) {
         SerialCommunicationRxtx.isReadStarted = isReadStarted;
     }
 
-    public static boolean isWriteStarted() {
+    public boolean isWriteStarted() {
         return isWriteStarted;
     }
 
     public static void setIsWriteStarted(boolean isWriteStarted) {
         SerialCommunicationRxtx.isWriteStarted = isWriteStarted;
+    }
+
+    public byte[] getBufferRead() {
+        return bufferRead;
+    }
+
+    public  void setBufferRead(byte[] bufferRead) {
+        SerialCommunicationRxtx.bufferRead = bufferRead;
+    }
+
+    public int getLenRead() {
+        return lenRead;
+    }
+
+    public void setLenRead(int lenRed) {
+        SerialCommunicationRxtx.lenRead = lenRed;
     }
 }

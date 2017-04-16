@@ -5,6 +5,7 @@ import be.fp.distriWebApp.core.model.eo.Cocktail;
 import be.fp.distriWebApp.core.model.eo.Pompe;
 import be.fp.distriWebApp.core.technical.protocol.ProtocolRequest;
 import be.fp.distriWebApp.core.technical.protocol.ProtocolResponse;
+import be.fp.distriWebApp.core.technical.protocol.response.CocktailEndResponse;
 import be.fp.distriWebApp.core.technical.thread.DistributeurServerAtmega;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -98,6 +99,15 @@ public class DistributeurCommunicationServer {
 	}
 
 
+	public static ProtocolResponse bytesToProtocolResponse(byte[] bytes){
+
+		/*analyse de la réponse pour la transformation en réponse*/
+
+		return new CocktailEndResponse();
+	}
+
+
+
 	/** */
 	public static class ExecuteRequestQueue implements Runnable
 	{
@@ -112,9 +122,12 @@ public class DistributeurCommunicationServer {
 						// une demande existe dans le pipe
 						serialCommunication.getOut().write(request.toBytes());
 
-						serialCommunication.getIn().read(response);
-						System.out.println(response);
+						while(serialCommunication.getLenRead() < 0){
+							// attente d'une réponse
+						}
+						ProtocolResponse protResponse = bytesToProtocolResponse(serialCommunication.getBufferRead());
 						// ajout de la réponse dans le pipe de réponse
+						responseList.push(protResponse);
 					}
 				}
 			}catch (IOException e){
@@ -157,11 +170,11 @@ public class DistributeurCommunicationServer {
 		this.requestList = requestList;
 	}
 
-	public static LinkedList<ProtocolResponse> getResponseList() {
+	public LinkedList<ProtocolResponse> getResponseList() {
 		return responseList;
 	}
 
-	public static void setResponseList(LinkedList<ProtocolResponse> responseList) {
+	public void setResponseList(LinkedList<ProtocolResponse> responseList) {
 		DistributeurCommunicationServer.responseList = responseList;
 	}
 
