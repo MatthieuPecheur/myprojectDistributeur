@@ -30,7 +30,7 @@ public class Pompe implements java.io.Serializable,Comparable<Pompe> {
 	@Id
 	@Column(name = "id", unique = true, nullable = false)
 
-	private int id;
+	private Integer id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fk_id_distributeur")
@@ -54,11 +54,11 @@ public class Pompe implements java.io.Serializable,Comparable<Pompe> {
 	private String typepompe;
 
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	

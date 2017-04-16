@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.ManagedBean;
 
+import be.fp.distriWebApp.core.model.dto.PompeDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,8 @@ public class DistributeurMb extends BasePage implements Serializable{
 	AdminiDistriMb adminDistriMb;
 	
 	private DistributeurDto currentDistributeur;
+
+	private PompeDto currentPompe;
 	
 	private List<DistributeurDto> getAllDistributeur(){		
 		return adminDistriMb.getDistributeurList();
@@ -62,6 +65,36 @@ public class DistributeurMb extends BasePage implements Serializable{
 		currentDistributeur = new DistributeurDto();
 		return "distributeurForm";
 	}
+
+	/* Pompes */
+
+	public String editPompe(PompeDto pompeToEdit){
+		setCurrentPompe(pompeToEdit);
+		return "";
+	}
+	public String savePompe(){
+		if(currentPompe.getId() != null){
+			//distributeurBo.saveDistributeur(currentDistributeur);
+		}
+
+		return "";
+	}
+	public String deletePompe(){
+		//distributeurBo.deleteDistributeur(currentDistributeur);
+		currentPompe = null;
+
+		return "";
+	}
+	public String cancelPompe(){
+		currentPompe = null;
+		return "distributeurs";
+	}
+
+	public String addPompe(){
+		currentPompe = new PompeDto();
+		return "";
+	}
+
 	/*GETTERS AND SETTETS*/	
 	
 	public void setSelectedDistrubeur(DistributeurDto selectedDistri){
@@ -85,6 +118,11 @@ public class DistributeurMb extends BasePage implements Serializable{
 		this.currentDistributeur = currentDistributeur;
 	}
 
+	public PompeDto getCurrentPompe() {
+		return currentPompe;
+	}
 
-	
+	public void setCurrentPompe(PompeDto currentPompe) {
+		this.currentPompe = currentPompe;
+	}
 }

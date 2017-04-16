@@ -6,14 +6,19 @@
     <ui:define name="title">#{text['distributeurForm.title']}</ui:define>
     <ui:param name="menu" value="DistriMenu"/>
     <ui:define name="body">
+
         <c:set var="delDistri" value="#{text['distributeurList.distributeur']}"/>
 		<c:set var="distri" value="#{distributeurMb.currentDistributeur}"/>
+
+		<h2>#{text['distributeurForm.maintitle']} #{distri.intitule} </h2>
+
         <script type="text/javascript">var msgDelConfirm =
            "<h:outputFormat value="#{text['delete.confirm']}"><f:param value="#{delDistri}" /></h:outputFormat>";
         </script>
         
         <ul class="nav nav-tabs content-tabs" id="maincontent" role="tablist">
 	          <li class="active"><a href="#infoGen" role="tab" data-toggle="tab">#{text['distributeurForm.tab.infogeneneral']}</a></li>
+		      <li><a href="#pompe" role="tab" data-toggle="tab">#{text['distributeurForm.tab.pompes']}</a></li>
 			  <c:if test="${adminiDistriMb.getTechnicalByDistributeurDto(distri).etatMarche}">
 				  <li><a href="#etat" role="tab" data-toggle="tab">#{text['distributeurForm.tab.etatDistri']}</a></li>
 				  <li><a href="#maintenance" role="tab" data-toggle="tab">#{text['distributeurForm.tab.maintenance']}</a></li>
@@ -78,7 +83,51 @@
 	      
              </p>
           </div><!--/.tab-pane -->
+		  <div class="tab-pane fade" id="pompe">
+			  <p>
+				  <h:form id="editPompe">
+					  <div id="actions" class="btn-group">
+						  <!-- <script> shows up here and causes square corners on the Add button below -->
+						  <h:commandButton action="#{distributeurMb.addPompe}" value="#{text['button.add']}" id="addPompe"
+										   styleClass="btn btn-primary">
+							  <f:param name="from" value="pompes"/>
+						  </h:commandButton>
+						  <h:commandButton value="#{text['button.done']}" action="home" id="cancelPompe"
+										   immediate="true" styleClass="btn btn-default">
+						  </h:commandButton>
+					  </div>
 
+					  <p:dataTable id="pompes" var="pompe" value="#{distri.pompesList}"
+								   paginator="true" rows="25"
+								   paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+								   rowsPerPageTemplate="5,10,15">
+						  <p:column style="width: 10%">
+							  <f:facet name="header">
+								  <p:column sortBy="id">
+									  <h:outputText value="#{text['pompe.id']}"/>
+								  </p:column>
+							  </f:facet>
+							  <h:outputText value="#{pompe.id}"/>
+						  </p:column>
+
+						  <p:column style="width: 20%">
+							  <f:facet name="header">
+								  <p:column>
+									  <h:outputText value="#{text['pompe.action']}"/>
+								  </p:column>
+							  </f:facet>
+							  <p:panelGrid columns="3">
+								  <p:commandLink ajax="false" process="this" immediate="true" action="#{distributeurMb.editPompe(pompe)}">
+									  <div class="viewDetail" title="#{text['pompe.detail']}"/>
+								  </p:commandLink>
+							  </p:panelGrid>
+						  </p:column>
+					  </p:dataTable>
+
+				  </h:form>
+
+			  </p>
+		  </div><!--/.tab-pane -->
           <div class="tab-pane fade" id="etat">
              <p>State Content : ...</p>
           </div><!--/.tab-pane -->

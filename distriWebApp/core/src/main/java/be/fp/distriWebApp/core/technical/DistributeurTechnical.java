@@ -3,7 +3,6 @@ package be.fp.distriWebApp.core.technical;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -11,7 +10,6 @@ import org.slf4j.LoggerFactory;
 
 import be.fp.distriWebApp.core.model.dto.DistributeurDto;
 import be.fp.distriWebApp.core.model.eo.Cocktail;
-import be.fp.distriWebApp.core.model.eo.Ingredient;
 import be.fp.distriWebApp.core.model.eo.Pompe;
 import be.fp.distriWebApp.core.technical.thread.DistributeurServerAtmega;
 
@@ -30,9 +28,7 @@ public class DistributeurTechnical {
 	private ServerSocket sServerAtmega ;
 	
 	private DistributeurServerAtmega distriServerAtmega;
-	private SerialCommunicationRxtx serialCommunication;
-
-	 		
+	private DistributeurCommunicationServer distriCommunication;
 
 	public DistributeurTechnical(DistributeurDto distriDto)
 	{
@@ -64,11 +60,11 @@ public class DistributeurTechnical {
 	/*Manage element for distributeur*/
 
 	public void startDistributeur(){
-		startSerialCommunication();
+		startCommunication();
 	}
 
 	public void stopDistributeur(){
-		stopSerialCommunication();
+		stopCommunication();
 	}
 
 	public void startServerAtmega()
@@ -84,14 +80,14 @@ public class DistributeurTechnical {
 			e.printStackTrace();
 		}	
 	}
-	public void startSerialCommunication()
+	public void startCommunication()
 	{
 		try {
-			if(serialCommunication == null){
-				serialCommunication = new SerialCommunicationRxtx("COM3");
+			if(distriCommunication == null){
+				distriCommunication = new DistributeurCommunicationServer(distributeur);
 			}
-			if(!serialCommunication.isStarted()){
-				serialCommunication.connect();
+			if(!distriCommunication.isStarted()){
+				distriCommunication.startCommunication();
 			}
 
 		} catch (Exception e) {
@@ -100,9 +96,9 @@ public class DistributeurTechnical {
 		}	
 	}
 
-	public void stopSerialCommunication(){
-		if(serialCommunication != null && serialCommunication.isStarted()){
-			serialCommunication.unConnect();
+	public void stopCommunication(){
+		if(distriCommunication != null && distriCommunication.isStarted()){
+			distriCommunication.stopCommunication();
 		}
 
 	}
@@ -123,6 +119,7 @@ public class DistributeurTechnical {
 	}
 
 
+
 	/* Getters and setters*/
 
 
@@ -133,12 +130,11 @@ public class DistributeurTechnical {
 	public void setDistributeur(DistributeurDto distributeur) {
 		this.distributeur = distributeur;
 	}
-
-	public SerialCommunicationRxtx getSerialCommunication() {
-		return serialCommunication;
+	public DistributeurCommunicationServer getDistriCommunication() {
+		return distriCommunication;
 	}
 
-	public void setSerialCommunication(SerialCommunicationRxtx serialCommunication) {
-		this.serialCommunication = serialCommunication;
+	public void setDistriCommunication(DistributeurCommunicationServer distriCommunication) {
+		this.distriCommunication = distriCommunication;
 	}
 }

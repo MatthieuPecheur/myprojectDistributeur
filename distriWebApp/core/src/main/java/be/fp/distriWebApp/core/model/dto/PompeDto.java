@@ -20,16 +20,16 @@ public class PompeDto implements java.io.Serializable {
 
 
 
-	private int id;
+	private Integer id;
 	private float debitmlperseconde;
 	private String marque;
 	private String typepompe;
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
