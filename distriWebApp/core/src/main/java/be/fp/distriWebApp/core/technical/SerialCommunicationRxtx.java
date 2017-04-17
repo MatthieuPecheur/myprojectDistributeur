@@ -1,30 +1,47 @@
 package be.fp.distriWebApp.core.technical;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
-
 import gnu.io.CommPort;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
+
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Stream;
 
 public class SerialCommunicationRxtx
 {
 
     private static boolean  isReadStarted = false;
     private static boolean  isWriteStarted = false;
-    private static InputStream in;
-    private static OutputStream out;
+
+    private InputStream in;
+    private OutputStream out;
+
+    private PrintWriter fluxOut;
+    private BufferedReader fluxIn;
+
+
+    private BufferedReader fluxInForOut;
+
     private static String serialPort;
 
     private static Thread readThread;
     private static Thread writeThread;
 
-    private static byte[] bufferRead = new byte[2024];
+    private static byte[] bufferRead = new byte[2048];
+    private static byte[] bufferWrite = new byte[2048];
     private static int lenRead = -1;
 
+
+    private static final Lock lock = new ReentrantLock();
+    private static final Condition cond1 = lock.newCondition();
+    private static final Condition cond2 = lock.newCondition();
+
+    private static ByteArrayInputStream inputStreamForWrite;
+    private static ByteArrayOutputStream outputStreamForWrite;
 
     public SerialCommunicationRxtx(String serialPort)
     {
@@ -48,7 +65,13 @@ public class SerialCommunicationRxtx
                 serialPort.setSerialPortParams(57600,SerialPort.DATABITS_8,SerialPort.STOPBITS_1,SerialPort.PARITY_NONE);
 
                 in = serialPort.getInputStream();
+                fluxIn = new BufferedReader(new InputStreamReader(in));
                 out = serialPort.getOutputStream();
+                fluxOut = new PrintWriter(out);
+
+                inputStreamForWrite = new ByteArrayInputStream(bufferWrite);
+                outputStreamForWrite = new ByteArrayOutputStream();
+
 
                 startReadCommunication();
                 startWriteCommunication();
@@ -67,7 +90,7 @@ public class SerialCommunicationRxtx
     }
 
     public void startReadCommunication(){
-        if(in != null){
+        if(in  != null){
             readThread = new Thread(new SerialReader(in));
             if(!isReadThreadAlive()){
                 readThread.start();
@@ -104,14 +127,10 @@ public class SerialCommunicationRxtx
         return writeThread != null && writeThread.isAlive();
     }
 
-    public boolean writeString(String stringToWrite) throws IOException{
-        try {
-            byte[] result = stringToWrite.getBytes(StandardCharsets.UTF_8);
-            out.write(result);
-            return true;
-        }catch (IOException e){
-            throw e;
-        }
+    public void writeOutputStreamForWrite(byte[] byteToWrite) throws IOException {
+        bufferWrite = new byte[2048];
+        bufferWrite = byteToWrite ;
+        outputStreamForWrite.write(bufferWrite);
     }
 
     /** */
@@ -131,7 +150,17 @@ public class SerialCommunicationRxtx
             {
                 while ( ( lenRead = this.in.read(bufferRead)) > -1 && isReadStarted == true)
                 {
-                    System.out.print(new String(bufferRead,0,lenRead));
+                    lock.lock();
+                    try{
+                        System.out.print(new String(bufferRead,0,lenRead));
+                        cond1.signal();
+                        cond2.await();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } finally {
+                        lock.unlock();
+                    }
+
                 }
             }
             catch ( IOException e )
@@ -154,11 +183,12 @@ public class SerialCommunicationRxtx
         public void run ()
         {
             try
-            {                
-                int c = 0;
-                while (( lenRead = System.in.read()) > -1 && isWriteStarted == true)
+            {
+                int length = 0;
+                byte[] buffer = new byte[2048];
+                while (( length = inputStreamForWrite.read(buffer)) > -1 && isWriteStarted == true)
                 {
-                    this.out.write(c);
+                    this.out.write(buffer);
                 }                
             }
             catch ( IOException e )
@@ -175,6 +205,21 @@ public class SerialCommunicationRxtx
         return isWriteStarted && isReadStarted ;
     }
 
+    public BufferedReader getFluxIn() {
+        return fluxIn;
+    }
+
+    public void setFluxIn(BufferedReader fluxIn) {
+        this.fluxIn = fluxIn;
+    }
+
+    public PrintWriter getFluxOut() {
+        return fluxOut;
+    }
+
+    public void setFluxOut(PrintWriter fluxOut) {
+        this.fluxOut = fluxOut;
+    }
 
     public InputStream getIn() {
         return in;
@@ -190,6 +235,14 @@ public class SerialCommunicationRxtx
 
     public void setOut(OutputStream out) {
         this.out = out;
+    }
+
+    public ByteArrayInputStream getInputStreamForWrite() {
+        return inputStreamForWrite;
+    }
+
+    public void setInputStreamForWrite(ByteArrayInputStream inputStreamForWrite) {
+        SerialCommunicationRxtx.inputStreamForWrite = inputStreamForWrite;
     }
 
     public String getSerialPort() {
@@ -246,5 +299,17 @@ public class SerialCommunicationRxtx
 
     public void setLenRead(int lenRed) {
         SerialCommunicationRxtx.lenRead = lenRed;
+    }
+
+    public Lock getLock() {
+        return lock;
+    }
+
+    public Condition getCond1() {
+        return cond1;
+    }
+
+    public Condition getCond2() {
+        return cond2;
     }
 }

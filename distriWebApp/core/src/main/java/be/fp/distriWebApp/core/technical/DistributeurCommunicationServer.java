@@ -7,6 +7,7 @@ import be.fp.distriWebApp.core.technical.protocol.ProtocolRequest;
 import be.fp.distriWebApp.core.technical.protocol.ProtocolResponse;
 import be.fp.distriWebApp.core.technical.protocol.response.CocktailEndResponse;
 import be.fp.distriWebApp.core.technical.thread.DistributeurServerAtmega;
+import org.omg.IOP.IORHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -120,17 +121,27 @@ public class DistributeurCommunicationServer {
 					if(!requestList.isEmpty() && serialCommunication.isStarted()){
 						ProtocolRequest request = requestList.getFirst();
 						// une demande existe dans le pipe
-						serialCommunication.getOut().write(request.toBytes());
+						serialCommunication.writeOutputStreamForWrite(request.toBytes());
+						serialCommunication.getLock().lock();
+						try{
+							serialCommunication.getCond1().await();
+							// une réponse a été lue
+							ProtocolResponse protResponse = bytesToProtocolResponse(serialCommunication.getBufferRead());
+							// ajout de la réponse dans le pipe de réponse
+							responseList.push(protResponse);
 
-						while(serialCommunication.getLenRead() < 0){
-							// attente d'une réponse
+							serialCommunication.getCond2().signal();
+						}finally {
+							serialCommunication.getLock().unlock();
 						}
-						ProtocolResponse protResponse = bytesToProtocolResponse(serialCommunication.getBufferRead());
-						// ajout de la réponse dans le pipe de réponse
-						responseList.push(protResponse);
 					}
 				}
 			}catch (IOException e){
+				e.printStackTrace();
+				logger.error(e.getMessage());
+				isStarted = false;
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 				logger.error(e.getMessage());
 				isStarted = false;
 			}
