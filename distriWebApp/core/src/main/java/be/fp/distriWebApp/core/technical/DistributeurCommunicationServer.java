@@ -1,12 +1,14 @@
 package be.fp.distriWebApp.core.technical;
 
+import be.fp.distriWebApp.core.enums.ProtocolEnum;
 import be.fp.distriWebApp.core.model.dto.DistributeurDto;
 import be.fp.distriWebApp.core.model.eo.Cocktail;
 import be.fp.distriWebApp.core.model.eo.Pompe;
 import be.fp.distriWebApp.core.technical.protocol.ProtocolRequest;
 import be.fp.distriWebApp.core.technical.protocol.ProtocolResponse;
-import be.fp.distriWebApp.core.technical.protocol.response.CocktailEndResponse;
+import be.fp.distriWebApp.core.technical.protocol.response.*;
 import be.fp.distriWebApp.core.technical.thread.DistributeurServerAtmega;
+import com.ctc.wstx.util.StringUtil;
 import org.omg.IOP.IORHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -107,14 +109,63 @@ public class DistributeurCommunicationServer {
 		return new CocktailEndResponse();
 	}
 
+	public static ProtocolResponse stringToProtocolResponse(String lineReaded){
 
+		UnkownResponse unResponse = new UnkownResponse();
+		if(lineReaded != null && lineReaded.length() > 3){
+
+			/*analyse de la réponse pour la transformation en réponse*/
+			String code = lineReaded.substring(0,3);
+
+			if(ProtocolEnum.AUTHEN_RFID_RESPONSE_ERROR.getName().equals(code)){
+				AuthentificationRfidErrorResponse authenError = new AuthentificationRfidErrorResponse();
+				return authenError;
+			}else if(ProtocolEnum.AUTHEN_RFID_RESPONSE_READ.getName().equals(code)) {
+				AuthentificationRfidReadResponse authenRead = new AuthentificationRfidReadResponse();
+				return authenRead;
+			}else if(ProtocolEnum.COCKTAIL_RESPONSE_ACK.getName().equals(code)){
+				CocktailAckResponse cockAckRes = new CocktailAckResponse();
+				return cockAckRes;
+			}else if(ProtocolEnum.COCKTAIL_RESPONSE_END.getName().equals(code)){
+				CocktailEndResponse cockEnd = new CocktailEndResponse();
+				return cockEnd;
+			}else if(ProtocolEnum.COCKTAIL_RESPONSE_ERROR.getName().equals(code)){
+				CocktailErrorResponse cockErr = new CocktailErrorResponse();
+				return cockErr;
+			}else if(ProtocolEnum.COCKTAIL_RESPONSE_START.getName().equals(code)){
+				CocktailStartResponse cockStart = new CocktailStartResponse();
+				return cockStart;
+			}else if(ProtocolEnum.ETAT_GENERAL_RESPONSE.getName().equals(code)){
+				EtatGeneralResponse etatGen = new EtatGeneralResponse();
+				return etatGen;
+			}else if(ProtocolEnum.ETAT_TECHNIQUE_RESPONSE.getName().equals(code)){
+				EtatTechniqueResponse etatTech = new EtatTechniqueResponse();
+				return etatTech;
+			}else if(ProtocolEnum.GOBELET_RESPONSE_NO.getName().equals(code)){
+				GobeletEmptyResponse gobeletEmp = new GobeletEmptyResponse();
+				return gobeletEmp;
+			}else if(ProtocolEnum.GOBELET_RESPONSE_TO_EARLY.getName().equals(code)){
+				GobeletToEarlyResponse gobeletToEarly = new GobeletToEarlyResponse();
+				return gobeletToEarly;
+			}else if(ProtocolEnum.LED_AMBIANCE_RESPONSE.getName().equals(code)){
+				LedAmbianceResponse ledAmb = new LedAmbianceResponse();
+				return ledAmb;
+			}else if(ProtocolEnum.LED_TABLE_RESPONSE_OK.getName().equals(code)){
+				LedMapOkResponse ledMapOk = new LedMapOkResponse();
+				return ledMapOk;
+			}else if(ProtocolEnum.LED_TABLE_RESPONSE_NOK.getName().equals(code)){
+				LedMapNokResponse ledMapNok = new LedMapNokResponse();
+				return ledMapNok;
+			}
+		}
+		return unResponse;
+	}
 
 	/** */
 	public static class ExecuteRequestQueue implements Runnable
 	{
 		public void run ()
 		{
-			byte[] response = new byte[250];
 			try{
 				while (isStarted == true)
 				{
@@ -126,7 +177,9 @@ public class DistributeurCommunicationServer {
 						try{
 							serialCommunication.getCond1().await();
 							// une réponse a été lue
-							ProtocolResponse protResponse = bytesToProtocolResponse(serialCommunication.getBufferRead());
+							//ProtocolResponse protResponse = bytesToProtocolResponse(serialCommunication.getBufferRead());
+							ProtocolResponse protResponse = stringToProtocolResponse(serialCommunication.getLineRead());
+
 							// ajout de la réponse dans le pipe de réponse
 							responseList.push(protResponse);
 
@@ -146,9 +199,6 @@ public class DistributeurCommunicationServer {
 				isStarted = false;
 			}
 		}
-
-
-
 	}
 
 

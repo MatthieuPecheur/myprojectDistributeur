@@ -25,8 +25,10 @@ public enum ProtocolEnum {
 	COCKTAIL_RESPONSE_END("EOCK"),
 
 	GOBELET_RESPONSE_NO("PGOB"),
-	GOBELET_RESPONSE_TO_EARLY("TGOB");
+	GOBELET_RESPONSE_TO_EARLY("TGOB"),
 
+
+	INCONNUE_RESPONSE("UERR");
 
 	private final String name;
 

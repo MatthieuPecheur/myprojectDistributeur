@@ -15,6 +15,7 @@ public class SerialCommunicationRxtx
 {
 
     private static boolean  isReadStarted = false;
+    private static boolean  isReadLineStarted = false;
     private static boolean  isWriteStarted = false;
 
     private InputStream in;
@@ -29,8 +30,10 @@ public class SerialCommunicationRxtx
     private static String serialPort;
 
     private static Thread readThread;
+    private static Thread readLineThread;
     private static Thread writeThread;
 
+    private static String lineRead;
     private static byte[] bufferRead = new byte[2048];
     private static byte[] bufferWrite = new byte[2048];
     private static int lenRead = -1;
@@ -73,7 +76,8 @@ public class SerialCommunicationRxtx
                 outputStreamForWrite = new ByteArrayOutputStream();
 
 
-                startReadCommunication();
+                //startReadCommunication();
+                startReadLineCommunication();
                 startWriteCommunication();
 
             }
@@ -84,8 +88,11 @@ public class SerialCommunicationRxtx
         }
     }
 
+
+
     public void unConnect(){
         stopReadCommunication();
+        stopReadLineCommunication();
         stopWriteCommunication();
     }
 
@@ -95,6 +102,16 @@ public class SerialCommunicationRxtx
             if(!isReadThreadAlive()){
                 readThread.start();
                 isReadStarted = true;
+            }
+        }
+    }
+
+    private void startReadLineCommunication() {
+        if(fluxIn  != null){
+            readLineThread = new Thread(new SerialReaderLine(fluxIn));
+            if(!isReadLineThreadAlive()){
+                readLineThread.start();
+                isReadLineStarted = true;
             }
         }
     }
@@ -114,6 +131,14 @@ public class SerialCommunicationRxtx
         }
     }
 
+    public void stopReadLineCommunication(){
+        if(isReadThreadAlive()) {
+            isReadLineStarted = false;
+        }
+    }
+
+
+
     public void stopWriteCommunication(){
          if(isWriteThreadAlive()){
              isWriteStarted = false;
@@ -122,6 +147,10 @@ public class SerialCommunicationRxtx
 
     public boolean isReadThreadAlive(){
         return readThread != null && readThread.isAlive();
+    }
+
+    public boolean isReadLineThreadAlive(){
+        return readLineThread != null && readLineThread.isAlive();
     }
     public boolean isWriteThreadAlive(){
         return writeThread != null && writeThread.isAlive();
@@ -170,6 +199,42 @@ public class SerialCommunicationRxtx
         }
     }
 
+    public static class SerialReaderLine implements Runnable
+    {
+        BufferedReader fluxIn;
+
+        public SerialReaderLine (  BufferedReader fluxIn )
+        {
+            this.fluxIn = fluxIn;
+        }
+
+        public void run ()
+        {
+
+            try
+            {
+                while ( ( lineRead = fluxIn.readLine()) != null && isReadLineStarted == true)
+                {
+                    lock.lock();
+                    try{
+                        System.out.print(lineRead);
+                        cond1.signal();
+                        cond2.await();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } finally {
+                        lock.unlock();
+                    }
+
+                }
+            }
+            catch ( IOException e )
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+
     /** */
     public static class SerialWriter implements Runnable 
     {
@@ -200,6 +265,14 @@ public class SerialCommunicationRxtx
 
     /* getters and setters */
 
+
+    public static boolean isReadLineStarted() {
+        return isReadLineStarted;
+    }
+
+    public static void setIsReadLineStarted(boolean isReadLineStarted) {
+        SerialCommunicationRxtx.isReadLineStarted = isReadLineStarted;
+    }
 
     public boolean isStarted() {
         return isWriteStarted && isReadStarted ;
@@ -261,6 +334,14 @@ public class SerialCommunicationRxtx
         this.readThread = readThread;
     }
 
+    public static Thread getReadLineThread() {
+        return readLineThread;
+    }
+
+    public static void setReadLineThread(Thread readLineThread) {
+        SerialCommunicationRxtx.readLineThread = readLineThread;
+    }
+
     public Thread getWriteThread() {
         return writeThread;
     }
@@ -311,5 +392,13 @@ public class SerialCommunicationRxtx
 
     public Condition getCond2() {
         return cond2;
+    }
+
+    public  String getLineRead() {
+        return lineRead;
+    }
+
+    public void setLineRead(String lineRead) {
+        SerialCommunicationRxtx.lineRead = lineRead;
     }
 }
