@@ -74,6 +74,9 @@
                         	<p:commandLink ajax="false" process="this" immediate="true" action="#{distributeurMb.edit(distri)}">
                         	   <div class="viewDetail" title="#{text['distributeur.detail']}"/>
                         	</p:commandLink>
+                            <p:commandLink ajax="false" process="this" immediate="true" action="#{distributeurMb.addInstructionQueue(distri)}">
+                                <div class="viewDetail" title="#{text['distributeur.detail']}"/>
+                            </p:commandLink>
                         </p:panelGrid>
                     </p:column>               
                 </p:dataTable>

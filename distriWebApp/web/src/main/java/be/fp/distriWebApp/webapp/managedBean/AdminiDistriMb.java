@@ -7,6 +7,7 @@ import java.util.List;
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 
+import be.fp.distriWebApp.core.technical.protocol.request.AuthentificationRfidRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +75,12 @@ public class AdminiDistriMb implements Serializable{
 			currTechn.stopDistributeur();
 		}
 	}
-	
+
+	public void addInstructionQueue(DistributeurDto currentDistri){
+		AuthentificationRfidRequest authReq = new AuthentificationRfidRequest();
+		getTechnicalByDistributeurDto(currentDistri).getDistriCommunication().getRequestList().add(authReq);
+	}
+
 	public void clearDistributeurList(){
 		if(distributeurList != null && distributeurTechnList != null){
 			distributeurList.clear();
