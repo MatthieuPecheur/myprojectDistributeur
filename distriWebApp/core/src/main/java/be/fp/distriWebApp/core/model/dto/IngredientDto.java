@@ -78,5 +78,10 @@ public class IngredientDto implements java.io.Serializable {
 	public void setQuantiteRestante(BigDecimal quantiteRestante) {
 		this.quantiteRestante = quantiteRestante;
 	}
+	
+	public String getShortName()
+	{
+		return intitule + " (" + marque +  ")";
+	}
 
 }

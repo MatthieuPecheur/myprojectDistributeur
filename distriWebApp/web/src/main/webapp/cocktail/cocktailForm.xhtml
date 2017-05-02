@@ -19,12 +19,12 @@
 	          <li><a href="#ingredientParam" role="tab" data-toggle="tab">#{text['cocktailForm.tab.ingredientParam']}</a></li>
 
         </ul>
-
+	  <h:form id="disdtriForm" styleClass="well" autocomplete="off">
       <div class="tab-content">
 
           <div class="tab-pane fade in active" id="infoGen">
              <p>    
-	            <h:form id="disdtriForm" styleClass="well" autocomplete="off">
+	          
 	                <h:inputHidden value="#{cocktailMb.currentCocktail.id}" id="id"/>
 
 
@@ -52,34 +52,49 @@
 							<p:message for="couleur"/>
 						</div>
 
-					</div>
-
-	                <div class="form-group form-actions">
-	                    <h:commandButton value="#{text['button.save']}" action="#{cocktailMb.saveCocktail}" styleClass="btn btn-primary"/>
-	
-	                    <!-- Todo: hide this button when the user's id is not assigned. Wrapping it with <c:if test="${not empty userForm.user.id}"> or
-	                         rendered="${not empty userForm.user.id}" causes this button to not call the delete() method in UserForm.  -->
-
-						<c:if test="${not empty cocktailMb.currentCocktail.id}">
-							<h:commandButton value="#{text['button.delete']}" action="#{cocktailMb.deleteCocktail}"
-											 styleClass="btn btn-default" onclick="return confirmMessage(msgDelConfirm)"/>
-						</c:if>
-
-	                    <h:commandButton value="#{text['button.cancel']}" action="#{cocktailMb.cancelCocktail}" immediate="true"
-	                        styleClass="btn btn-default"/>
-	                </div>
-	            </h:form>
+					</div>       
 	      
              </p>
           </div><!--/.tab-pane -->
 
           <div class="tab-pane fade" id="ingredientsList">
-             <p>State Content : ...</p>
+            <p>
+            	<ui:define name="title">#{text['cocktailForm.ingredient.title']}</ui:define>
+            	
+            	 <p:pickList id="ingredientPickList" value="#{cocktailMb.ingredientPickList}" var="ingredient" effect="bounce"
+                itemValue="#{ingredient}" itemLabel="#{ingredient.shortName}" showSourceControls="true" showTargetControls="true" showCheckbox="true" responsive="true"
+                showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" converter="primeFacesPickListConverter">
+                
+                <f:facet name="sourceCaption">#{text['cocktailForm.ingredient.disponible']}</f:facet>
+        		<f:facet name="targetCaption">#{text['cocktailForm.ingredient.utilise']}</f:facet>
+        		
+                </p:pickList> 
+                
+                                              
+			</p>
           </div><!--/.tab-pane -->
 		  <div class="tab-pane fade" id="ingredientParam">
-             <p>Mainetance Content : ...</p>
+             <p>
+             	
+             </p>
           </div><!--/.tab-pane -->
        </div><!--/.tab-content -->
+       
+      <div class="form-group form-actions">
+       <h:commandButton value="#{text['button.save']}" action="#{cocktailMb.saveCocktail}" styleClass="btn btn-primary"/>
+
+       <!-- Todo: hide this button when the user's id is not assigned. Wrapping it with <c:if test="${not empty userForm.user.id}"> or
+            rendered="${not empty userForm.user.id}" causes this button to not call the delete() method in UserForm.  -->
+
+		<c:if test="${not empty cocktailMb.currentCocktail.id}">
+			<h:commandButton value="#{text['button.delete']}" action="#{cocktailMb.deleteCocktail}"
+							 styleClass="btn btn-default" onclick="return confirmMessage(msgDelConfirm)"/>
+		</c:if>
+
+        <h:commandButton value="#{text['button.cancel']}" action="#{cocktailMb.cancelCocktail}" immediate="true"
+            styleClass="btn btn-default"/>
+     </div>
+     </h:form> 
 </ui:define>
 </ui:composition>
 </html>

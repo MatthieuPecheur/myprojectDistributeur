@@ -1,14 +1,13 @@
 package be.fp.distriWebApp.webapp.managedBean;
 
-import be.fp.distriWebApp.core.bo.CocktailBo;
-import be.fp.distriWebApp.core.bo.DistributeurBo;
-import be.fp.distriWebApp.core.bo.IngredientBo;
-import be.fp.distriWebApp.core.model.dto.CocktailDto;
-import be.fp.distriWebApp.core.model.dto.DistributeurDto;
-import be.fp.distriWebApp.core.model.dto.IngredientDto;
-import be.fp.distriWebApp.core.model.eo.Ingredient;
-import be.fp.distriWebApp.webapp.action.BasePage;
-import org.apache.avro.generic.GenericData;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.annotation.ManagedBean;
+
+import org.primefaces.model.DualListModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +15,12 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.context.WebApplicationContext;
 
-import javax.annotation.ManagedBean;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import be.fp.distriWebApp.core.bo.CocktailBo;
+import be.fp.distriWebApp.core.bo.IngredientBo;
+import be.fp.distriWebApp.core.model.dto.CocktailDto;
+import be.fp.distriWebApp.core.model.dto.IngredientDto;
+import be.fp.distriWebApp.core.model.dto.IngredientcocktailDto;
+import be.fp.distriWebApp.webapp.action.BasePage;
 
 @Controller
 @ManagedBean
@@ -30,12 +31,16 @@ public class CocktailMb extends BasePage implements Serializable{
 	
 	@Autowired private CocktailBo cocktailBo;
 	@Autowired private IngredientBo ingredientBo;
+	
 	AdminiDistriMb adminDistriMb;
 
 	private IngredientDto currentIngredient;
 	private CocktailDto currentCocktail;
+	private DualListModel<IngredientDto> ingredientPickList;	
 
 	/*COCKTAIL*/
+
+
 
 	public List<CocktailDto> getAllCocktail(){
 		List<CocktailDto> cocktailsListDto = cocktailBo.findAllCocktail();
@@ -44,6 +49,7 @@ public class CocktailMb extends BasePage implements Serializable{
 
 	public String editCocktail(CocktailDto cocktailToEdit){
 		setCurrentCocktail(cocktailToEdit);
+		refeshPickListInfredient();
 		return "cocktailForm";
 	}
 
@@ -54,10 +60,45 @@ public class CocktailMb extends BasePage implements Serializable{
 
 	public String saveCocktail(){
 		if(currentCocktail.getId() != null){
+			saveIngredientCocktail();
 			cocktailBo.saveCocktail(currentCocktail);
 		}
 		return "cocktailForm";
 	}
+	private void saveIngredientCocktail() {
+		boolean bfound = false;
+		// suppression
+		 
+		for(Iterator<IngredientcocktailDto> itIngCock  = currentCocktail.getIngredientcocktails().iterator(); itIngCock.hasNext();){		
+			IngredientcocktailDto currIngCock = (IngredientcocktailDto) itIngCock.next();
+		    for(IngredientDto curTarg : ingredientPickList.getTarget()){
+			   if(curTarg.getId().equals(currIngCock.getIngredient().getId())){
+				   bfound = true;
+			   }			   
+		    }	
+		    if(bfound == false){
+		    	currentCocktail.getIngredientcocktails().remove(currIngCock);
+		    }
+		    bfound = false;
+		}		
+		// ajout
+		for(IngredientDto curTarg : ingredientPickList.getTarget()){
+			
+			for(Iterator<IngredientcocktailDto> itIngCockAdd  = currentCocktail.getIngredientcocktails().iterator(); itIngCockAdd.hasNext();){
+				IngredientcocktailDto currIngCockToAdd = (IngredientcocktailDto) itIngCockAdd.next();
+				if(curTarg.getId().equals(currIngCockToAdd.getIngredient().getId())){
+					bfound = true;
+				}
+			}
+			if(bfound = false){
+				IngredientcocktailDto ingredientcocktailDto = new IngredientcocktailDto();
+				ingredientcocktailDto.setIngredient(curTarg);
+				currentCocktail.getIngredientcocktails().add(ingredientcocktailDto);				
+			}
+			bfound = false;
+		}
+	}
+
 	public String deleteCocktail(){
 		if(currentCocktail  != null){
 			cocktailBo.deleteCocktail(currentCocktail);
@@ -119,6 +160,27 @@ public class CocktailMb extends BasePage implements Serializable{
 		currentIngredient.setAlcoolise(alcolise);
 		return "ingredientForm";
 	}
+	
+	public void refeshPickListInfredient(){
+		boolean bfound = false;
+	    List<IngredientDto> source = new ArrayList<IngredientDto>();  
+        List<IngredientDto> target = new ArrayList<IngredientDto>();  
+        
+        for(IngredientDto currIngredient : getAllIngredient()){
+        	for(IngredientDto currIngredientCock : currentCocktail.getIngredientsDto()){
+        		if(currIngredient.getId().equals(currIngredientCock.getId())){
+        			bfound = true;
+        		}
+        	}
+        	if(bfound == true){
+        		target.add(currIngredient);
+        	}else{
+        		source.add(currIngredient);
+        	}
+        	bfound = false;
+        }        
+        ingredientPickList = new DualListModel<>(source, target);
+	}
 	/*GETTERS AND SETTETS*/
 
 	public IngredientDto getCurrentIngredient() {
@@ -136,4 +198,14 @@ public class CocktailMb extends BasePage implements Serializable{
 	public void setCurrentCocktail(CocktailDto currentCocktail) {
 		this.currentCocktail = currentCocktail;
 	}
+
+	public DualListModel<IngredientDto> getIngredientPickList() {
+		return ingredientPickList;
+	}
+
+	public void setIngredientPickList(DualListModel<IngredientDto> ingredientPickList) {
+		this.ingredientPickList = ingredientPickList;
+	}
+	
+	
 }

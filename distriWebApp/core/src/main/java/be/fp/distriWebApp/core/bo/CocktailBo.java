@@ -20,6 +20,7 @@ public interface CocktailBo {
 	@WebMethod public int getNbreCocktailPosIngredient(@WebParam(name="coctailDto") CocktailDto cocktailDto);
 	@WebMethod public List<IngredientcocktailDto> verifieCocktailSotck(@WebParam(name="coctailDto")CocktailDto cocktailDto);
 	@WebMethod public void retireQuantiteIngredientcocktail(@WebParam(name="ingredCockDto")IngredientcocktailDto ingredCockDto);
+	
 
 	/*utils*/
 	@WebMethod public String getCocktailToString(@WebParam(name="coctailDto")CocktailDto coctailDto);

@@ -3,16 +3,6 @@ package be.fp.distriWebApp.core.model.dto;
 
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 
 public class CocktailDto implements java.io.Serializable {
@@ -61,6 +51,14 @@ public class CocktailDto implements java.io.Serializable {
 
 	public void setIngredientcocktails(Set<IngredientcocktailDto> ingredientcocktails) {
 		this.ingredientcocktails = ingredientcocktails;
+	}
+	
+	public Set<IngredientDto> getIngredientsDto(){
+		Set<IngredientDto> ingredientDtoList = new HashSet<IngredientDto>();
+		for(IngredientcocktailDto currIngrCock : ingredientcocktails){
+			ingredientDtoList.add(currIngrCock.getIngredient());
+		}
+		return ingredientDtoList;		
 	}
 
 
