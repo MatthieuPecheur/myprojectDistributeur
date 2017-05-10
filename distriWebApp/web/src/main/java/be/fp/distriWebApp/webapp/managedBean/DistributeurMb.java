@@ -65,6 +65,7 @@ public class DistributeurMb extends BasePage implements Serializable{
 		currentDistributeur = new DistributeurDto();
 		return "distributeurForm";
 	}
+	
 
 	/* Pompes */
 

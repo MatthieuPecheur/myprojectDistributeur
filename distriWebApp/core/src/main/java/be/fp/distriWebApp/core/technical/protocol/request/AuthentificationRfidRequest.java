@@ -9,10 +9,10 @@ import be.fp.distriWebApp.core.technical.protocol.ProtocolRequest;
 public class AuthentificationRfidRequest extends ProtocolRequest {
 
     public AuthentificationRfidRequest(){
-        this.code = ProtocolEnum.AUTHEN_RFID_REQUEST.getName();
+        this.code = ProtocolEnum.AUTHEN_RFID_REQUEST.getName() + "eot";
     }
     public byte[] toBytes(){
         byte[] bytes = code.getBytes();
-        return bytes;
+        return bytes ;
     }
 }

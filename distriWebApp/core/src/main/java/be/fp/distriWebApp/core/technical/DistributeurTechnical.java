@@ -88,6 +88,7 @@ public class DistributeurTechnical {
 			}
 			if(!distriCommunication.isStarted()){
 				distriCommunication.startCommunication();
+				etatMarche = true;
 			}
 
 		} catch (Exception e) {
@@ -99,6 +100,7 @@ public class DistributeurTechnical {
 	public void stopCommunication(){
 		if(distriCommunication != null && distriCommunication.isStarted()){
 			distriCommunication.stopCommunication();
+			etatMarche = false;
 		}
 
 	}

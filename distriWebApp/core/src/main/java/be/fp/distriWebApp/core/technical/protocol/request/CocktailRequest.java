@@ -13,7 +13,7 @@ public class CocktailRequest extends ProtocolRequest {
 
     private LinkedList<CocktailRequestElement> cocktailList;
     public CocktailRequest(){
-        this.code = ProtocolEnum.COCKTAIL_REQUEST.getName();
+        this.code = ProtocolEnum.COCKTAIL_REQUEST.getName() + "eot";
     }
 
     public LinkedList<CocktailRequestElement> getCocktailList() {

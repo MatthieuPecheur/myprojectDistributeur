@@ -38,6 +38,7 @@ public class DistributeurCommunicationServer {
 		isStarted = false;
 		distributeur = distriDto;
 		requestList = new LinkedList<ProtocolRequest>();
+		responseList = new LinkedList<ProtocolResponse>();
 	}
 
 
@@ -172,18 +173,22 @@ public class DistributeurCommunicationServer {
 					if(!requestList.isEmpty() && serialCommunication.isStarted()){
 						ProtocolRequest request = requestList.getFirst();
 						// une demande existe dans le pipe
-						serialCommunication.writeOutputStreamForWrite(request.toBytes());
 						serialCommunication.getLock().lock();
-						try{
+						serialCommunication.writeOutputStreamForWrite(request.toBytes());						
+						try{							
 							serialCommunication.getCond1().await();
+
 							// une réponse a été lue
 							//ProtocolResponse protResponse = bytesToProtocolResponse(serialCommunication.getBufferRead());
 							ProtocolResponse protResponse = stringToProtocolResponse(serialCommunication.getLineRead());
 
 							// ajout de la réponse dans le pipe de réponse
-							responseList.push(protResponse);
+							if(protResponse != null){
+								responseList.push(protResponse);
+							}
+							requestList.removeFirst();
 
-							serialCommunication.getCond2().signal();
+							//serialCommunication.getCond2().signal();
 						}finally {
 							serialCommunication.getLock().unlock();
 						}

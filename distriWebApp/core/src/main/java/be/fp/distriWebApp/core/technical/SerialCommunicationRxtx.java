@@ -31,6 +31,7 @@ public class SerialCommunicationRxtx
 
 
     private BufferedReader fluxInForOut;
+    private static int fact = 0;
 
     private static String serialPort;
 
@@ -40,7 +41,7 @@ public class SerialCommunicationRxtx
 
     private static String lineRead;
     private static byte[] bufferRead = new byte[2048];
-    private static byte[] bufferWrite = new byte[2048];
+    private static byte[] bufferWrite = new byte[0];
     private static int lenRead = -1;
 
 
@@ -50,6 +51,9 @@ public class SerialCommunicationRxtx
 
     private static ByteArrayInputStream inputStreamForWrite;
     private static ByteArrayOutputStream outputStreamForWrite;
+    private CommPort commPort;
+    private CommPortIdentifier portIdentifier;
+    private SerialPort serialPortObj;
 
     public SerialCommunicationRxtx(String serialPort)
     {
@@ -58,31 +62,31 @@ public class SerialCommunicationRxtx
     }
     public void connect () throws Exception
     {
-        CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(serialPort);
+        portIdentifier = CommPortIdentifier.getPortIdentifier(serialPort);
         if ( portIdentifier.isCurrentlyOwned() )
         {
             System.out.println("Error: Port is currently in use");
         }
         else
         {
-            CommPort commPort = portIdentifier.open(this.getClass().getName(),2000);
+            commPort = portIdentifier.open(this.getClass().getName(),2000);
 
             if ( commPort instanceof SerialPort )
             {
-                SerialPort serialPort = (SerialPort) commPort;
-                serialPort.setSerialPortParams(57600,SerialPort.DATABITS_8,SerialPort.STOPBITS_1,SerialPort.PARITY_NONE);
+            	serialPortObj = (SerialPort) commPort;
+            	serialPortObj.setSerialPortParams(57600,SerialPort.DATABITS_8,SerialPort.STOPBITS_1,SerialPort.PARITY_NONE);
 
-                in = serialPort.getInputStream();
+                in = serialPortObj.getInputStream();
                 fluxIn = new BufferedReader(new InputStreamReader(in));
-                out = serialPort.getOutputStream();
+                out = serialPortObj.getOutputStream();
                 fluxOut = new PrintWriter(out);
 
                 inputStreamForWrite = new ByteArrayInputStream(bufferWrite);
                 outputStreamForWrite = new ByteArrayOutputStream();
 
 
-                //startReadCommunication();
-                startReadLineCommunication();
+                startReadCommunication();
+                //startReadLineCommunication();
                 startWriteCommunication();
 
             }
@@ -97,8 +101,9 @@ public class SerialCommunicationRxtx
 
     public void unConnect(){
         stopReadCommunication();
-        stopReadLineCommunication();
+       // stopReadLineCommunication();
         stopWriteCommunication();
+        commPort.close();
     }
 
     public void startReadCommunication(){
@@ -132,13 +137,28 @@ public class SerialCommunicationRxtx
 
     public void stopReadCommunication(){
         if(isReadThreadAlive()) {
-            isReadStarted = false;
+            
+            try {
+            	isReadStarted = false;
+				fluxIn.close();
+				in.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }
     }
 
     public void stopReadLineCommunication(){
         if(isReadThreadAlive()) {
-            isReadLineStarted = false;
+           
+            try {
+            	isReadLineStarted = false;
+				out.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }
     }
 
@@ -162,9 +182,10 @@ public class SerialCommunicationRxtx
     }
 
     public void writeOutputStreamForWrite(byte[] byteToWrite) throws IOException {
-        bufferWrite = new byte[2048];
-        bufferWrite = byteToWrite ;
-        outputStreamForWrite.write(bufferWrite);
+        outputStreamForWrite.write(byteToWrite);
+        bufferWrite = outputStreamForWrite.toByteArray();
+        fact = 1;
+        
     }
 
     /** */
@@ -184,17 +205,19 @@ public class SerialCommunicationRxtx
             {
                 while ( ( lenRead = this.in.read(bufferRead)) > -1 && isReadStarted == true)
                 {
-                    lock.lock();
-                    try{
-                        System.out.print(new String(bufferRead,0,lenRead));
-                        cond1.signal();
-                        cond2.await();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } finally {
-                        lock.unlock();
-                    }
-
+                	if(lenRead > 0){
+                	     lock.lock();
+                         try{
+                             System.out.print(new String(bufferRead,0,lenRead));
+                             cond1.signal();
+                           
+                            // cond2.await();
+                          }/*catch (InterruptedException e) {
+                             e.printStackTrace();
+                         }*/ finally {
+                             lock.unlock();
+                         }
+                	}
                 }
             }
             catch ( IOException e )
@@ -256,9 +279,15 @@ public class SerialCommunicationRxtx
             {
                 int length = 0;
                 byte[] buffer = new byte[2048];
-                while (( length = inputStreamForWrite.read(buffer)) > -1 && isWriteStarted == true)
+                while (isWriteStarted == true)
                 {
-                    this.out.write(buffer);
+                	//length = inputStreamForWrite.read(buffer);
+                	if(fact > 0){
+                		this.out.write(bufferWrite);
+                		this.out.flush();
+                		fact = 0;
+                	}
+                    
                 }                
             }
             catch ( IOException e )
@@ -406,4 +435,12 @@ public class SerialCommunicationRxtx
     public void setLineRead(String lineRead) {
         SerialCommunicationRxtx.lineRead = lineRead;
     }
+	public int getFact() {
+		return fact;
+	}
+	public void setFact(int fact) {
+		this.fact = fact;
+	}
+    
+    
 }

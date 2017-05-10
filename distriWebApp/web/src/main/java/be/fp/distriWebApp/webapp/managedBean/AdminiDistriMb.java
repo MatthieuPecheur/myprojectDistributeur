@@ -7,7 +7,6 @@ import java.util.List;
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 
-import be.fp.distriWebApp.core.technical.protocol.request.AuthentificationRfidRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import be.fp.distriWebApp.core.bo.DistributeurBo;
 import be.fp.distriWebApp.core.model.dto.DistributeurDto;
-import be.fp.distriWebApp.core.technical.DistributeurTechnical;	
+import be.fp.distriWebApp.core.technical.DistributeurTechnical;
+import be.fp.distriWebApp.core.technical.protocol.request.CocktailRequest;	
 
 
 @Controller
@@ -77,8 +77,8 @@ public class AdminiDistriMb implements Serializable{
 	}
 
 	public void addInstructionQueue(DistributeurDto currentDistri){
-		AuthentificationRfidRequest authReq = new AuthentificationRfidRequest();
-		getTechnicalByDistributeurDto(currentDistri).getDistriCommunication().getRequestList().add(authReq);
+		CocktailRequest cokc = new CocktailRequest();
+		getTechnicalByDistributeurDto(currentDistri).getDistriCommunication().getRequestList().add(cokc);
 	}
 
 	public void clearDistributeurList(){
@@ -98,11 +98,14 @@ public class AdminiDistriMb implements Serializable{
 	}
 
 	public DistributeurTechnical getTechnicalByDistributeurDto(DistributeurDto distriDto){
-		for(DistributeurTechnical curTechnical : distributeurTechnList){
-			if(curTechnical.getDistributeur().getId().equals(distriDto.getId())){
-				return curTechnical;
+		if(distriDto != null){
+			for(DistributeurTechnical curTechnical : distributeurTechnList){
+				if(curTechnical.getDistributeur().getId().equals(distriDto.getId())){
+					return curTechnical;
+				}
 			}
 		}
+	
 		return null;
 	}
 
