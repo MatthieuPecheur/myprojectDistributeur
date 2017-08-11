@@ -45,6 +45,19 @@
 	                </div>
 
 					<div class="row">
+					
+						<p:commandButton value="Submit" oncomplete="PF('dlg').show();" update="grid" style="margin-left: 20px" />
+	 
+					    <p:dialog modal="true" widgetVar="dlg" showEffect="fade" hideEffect="fade" header="Selected Colors" resizable="false">
+					        <h:panelGrid id="grid" columns="2" cellpadding="5">
+					            <h:outputText value="Inline color: " />
+					            <h:outputText value="#{cocktailMb.colorInline}" style="background-color: \##{cocktailMb.colorInline}" />
+					 
+					            <h:outputText value="Popup color: " />
+					            <h:outputText value="#{cocktailMb.colorPopup}" style="background-color: \##{cocktailMb.colorPopup}" />
+					        </h:panelGrid>
+					    </p:dialog> 
+						
 						<div class="col-sm-6 form-group">
 							<h:outputLabel styleClass="control-label" for="couleur" value="#{text['cocktail.couleur']}"/>
 
@@ -62,20 +75,65 @@
             	<ui:define name="title">#{text['cocktailForm.ingredient.title']}</ui:define>
             	
             	 <p:pickList id="ingredientPickList" value="#{cocktailMb.ingredientPickList}" var="ingredient" effect="bounce"
-                itemValue="#{ingredient}" itemLabel="#{ingredient.shortName}" showSourceControls="true" showTargetControls="true" showCheckbox="true" responsive="true"
-                showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" converter="primeFacesPickListConverter">
-                
-                <f:facet name="sourceCaption">#{text['cocktailForm.ingredient.disponible']}</f:facet>
-        		<f:facet name="targetCaption">#{text['cocktailForm.ingredient.utilise']}</f:facet>
-        		
+	                itemValue="#{ingredient}" itemLabel="#{ingredient.shortName}" showSourceControls="true" showTargetControls="true" 
+	                showCheckbox="true" responsive="true" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" 
+	                converter="identifiedObjectPickListConverter">
+	                
+	                <f:facet name="sourceCaption">#{text['cocktailForm.ingredient.disponible']}</f:facet>
+	        		<f:facet name="targetCaption">#{text['cocktailForm.ingredient.utilise']}</f:facet>
+	        		<p:ajax event="transfer" oncomplete="transfertPickIngredient()"/>
                 </p:pickList> 
-                
-                                              
+                <p:remoteCommand name="transfertPickIngredient" action="#{cocktailMb.ingredientSourceToTarget()}"/>                              
 			</p>
           </div><!--/.tab-pane -->
 		  <div class="tab-pane fade" id="ingredientParam">
              <p>
-             	
+       	    <p:dataTable id="ingredientCocktail" var="ingCock" value="#{cocktailMb.currentCocktail.ingredientcocktailsList}" sortBy="#{ingCock.id}"
+                       paginator="true" rows="25"
+                       paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                       rowsPerPageTemplate="5,10,15">
+			<p:column style="width: 10%">
+                              <f:facet name="header">
+                                  <p:column sortBy="id">
+                                      <h:outputText value="#{text['ingredient.id']}"/>
+                                  </p:column>
+                              </f:facet>
+                              <h:outputText value="#{ingCock.ingredient.id}"/>
+                          </p:column>
+                          <p:column style="width: 34%">
+                              <f:facet name="header">
+                                  <p:column sortBy="intitule">
+                                      <h:outputText value="#{text['ingredient.intitule']}"/>
+                                  </p:column>
+                              </f:facet>
+                              <h:outputText value="#{ingCock.ingredient.intitule}"/>
+                          </p:column>
+                          <p:column style="width: 34%">
+                              <f:facet name="header">
+                                  <p:column sortBy="marque">
+                                      <h:outputText value="#{text['ingredient.marque']}"/>
+                                  </p:column>
+                              </f:facet>
+                              <h:outputText value="#{ingCock.ingredient.marque}"/>
+                          </p:column>
+                           <p:column style="width: 34%">
+                              <f:facet name="header">
+                                  <p:column sortBy="quantiteCl">
+                                      <h:outputText value="#{text['ingredientCocktail.quantiteCl']}"/>
+                                  </p:column>
+                              </f:facet>
+                              <h:outputText value="#{ingCock.quantiteCl}"/>
+                          </p:column>
+                         <p:column style="width: 34%">
+                              <f:facet name="header">
+                                  <p:column sortBy="numOrdre">
+                                      <h:outputText value="#{text['ingredientCocktail.numOrdre']}"/>
+                                  </p:column>
+                              </f:facet>
+                              <h:outputText value="#{ingCock.numOrdre}"/>
+                          </p:column>
+                      
+                </p:dataTable>
              </p>
           </div><!--/.tab-pane -->
        </div><!--/.tab-content -->

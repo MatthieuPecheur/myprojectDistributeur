@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import be.fp.distriWebApp.core.model.dto.DistributeurDto;
 import be.fp.distriWebApp.core.model.eo.Cocktail;
 import be.fp.distriWebApp.core.model.eo.Pompe;
+import be.fp.distriWebApp.core.technical.protocol.ProtocolRequest;
 import be.fp.distriWebApp.core.technical.thread.DistributeurServerAtmega;
 
 
@@ -119,8 +120,14 @@ public class DistributeurTechnical {
 	{
 		stopServerAtmega();
 	}
-
-
+	public void addRequestDistri(ProtocolRequest request){
+		if(distriCommunication != null && distriCommunication.isStarted()){
+			distriCommunication.getRequestList().add(request);
+		}
+	}
+	public void getLastResponse(){
+		
+	}
 
 	/* Getters and setters*/
 

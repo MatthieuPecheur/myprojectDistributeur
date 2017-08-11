@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.jws.WebService;
@@ -16,10 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 import be.fp.distriWebApp.core.bo.CocktailBo;
 import be.fp.distriWebApp.core.bo.abstractDozerMapperBo;
 import be.fp.distriWebApp.core.model.dao.CocktailDao;
+import be.fp.distriWebApp.core.model.dao.IngredientCocktailDao;
 import be.fp.distriWebApp.core.model.dao.IngredientDao;
 import be.fp.distriWebApp.core.model.dao.PompeDao;
 import be.fp.distriWebApp.core.model.dao.RefLovsDao;
 import be.fp.distriWebApp.core.model.dto.CocktailDto;
+import be.fp.distriWebApp.core.model.dto.IngredientDto;
 import be.fp.distriWebApp.core.model.dto.IngredientcocktailDto;
 import be.fp.distriWebApp.core.model.eo.Cocktail;
 import be.fp.distriWebApp.core.model.eo.Ingredient;
@@ -35,6 +38,8 @@ public class CocktailBoImpl extends abstractDozerMapperBo implements CocktailBo 
 	private PompeDao pompeDao;
 	@Autowired
 	private IngredientDao ingredientDao;
+	@Autowired
+	private IngredientCocktailDao ingredientCocktailDao;
 	@Autowired
 	private RefLovsDao refLovsDao;
 
@@ -54,11 +59,56 @@ public class CocktailBoImpl extends abstractDozerMapperBo implements CocktailBo 
 
 	@Transactional(readOnly=false)
 	@Override
-	public void saveCocktail(CocktailDto coctailDto) {
-		if(coctailDto != null){
-			cocktailDao.save( mapper.map(coctailDto, Cocktail.class));
+	public void saveCocktail(CocktailDto cocktailDto) {
+		if(cocktailDto != null){
+			
+			saveIngredientCocktail(cocktailDto);			
+			cocktailDao.save( mapper.map(cocktailDto, Cocktail.class));
 		}
 	}
+
+	private void saveIngredientCocktail(CocktailDto cocktailDto) {
+		boolean bfound = false;
+		
+		if(cocktailDto.getIngredientcocktails() != null && cocktailDto.getIngredientcocktails().size() > 0){
+			// suppression
+			Cocktail cocktailinit  = cocktailDao.get(cocktailDto.getId());
+			
+			for(Iterator<Ingredientcocktail> itIngCockAdd  = cocktailinit.getIngredientcocktails().iterator(); itIngCockAdd.hasNext();){		
+				Ingredientcocktail currIngCockInit = (Ingredientcocktail) itIngCockAdd.next();
+				
+			    for(IngredientcocktailDto curIngCockDto : cocktailDto.getIngredientcocktails()){
+				   if(curIngCockDto.getId() == currIngCockInit.getId()){
+					   bfound = true;
+				   }			   
+			    }	
+			    if(bfound == false){
+			    	itIngCockAdd.remove();
+			    	ingredientCocktailDao.remove(currIngCockInit);			    	
+			    }
+			    bfound = false;
+			}		
+			// ajout
+			for(IngredientcocktailDto currIngCockDto : cocktailDto.getIngredientcocktails()){
+				
+				for(Iterator<Ingredientcocktail> itIngCockAdd  = cocktailinit.getIngredientcocktails().iterator(); itIngCockAdd.hasNext();){
+					Ingredientcocktail currIngCockToAdd = (Ingredientcocktail) itIngCockAdd.next();
+					if(currIngCockDto.getId() == currIngCockToAdd.getId()){
+						bfound = true;
+					}
+				}
+				if(bfound == false){
+					Ingredientcocktail newIngredientCock = mapper.map(currIngCockDto, Ingredientcocktail.class);
+					newIngredientCock.setCocktail(cocktailinit);
+					newIngredientCock.setQuantiteCl(new BigDecimal(0));
+					newIngredientCock.setNumOrdre(99);
+					ingredientCocktailDao.save(newIngredientCock);						
+				}
+				bfound = false;
+			}
+		}
+	}
+
 
 	@Transactional(readOnly=false)
 	@Override

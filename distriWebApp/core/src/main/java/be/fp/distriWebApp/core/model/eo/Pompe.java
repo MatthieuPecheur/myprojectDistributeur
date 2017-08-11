@@ -6,6 +6,8 @@ import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -28,6 +30,8 @@ public class Pompe implements java.io.Serializable,Comparable<Pompe> {
 	public static final String TYPEPOMPE = "typepompe";
 
 	@Id
+	@GeneratedValue(strategy = IDENTITY)
+
 	@Column(name = "id", unique = true, nullable = false)
 
 	private Integer id;

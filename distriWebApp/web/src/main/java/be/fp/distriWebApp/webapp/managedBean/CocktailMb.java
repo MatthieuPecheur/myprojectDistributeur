@@ -2,10 +2,15 @@ package be.fp.distriWebApp.webapp.managedBean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.ManagedBean;
+import javax.annotation.PostConstruct;
 
 import org.primefaces.model.DualListModel;
 import org.slf4j.Logger;
@@ -37,10 +42,18 @@ public class CocktailMb extends BasePage implements Serializable{
 	private IngredientDto currentIngredient;
 	private CocktailDto currentCocktail;
 	private DualListModel<IngredientDto> ingredientPickList;	
+	private String colorInline;
+	private String colorPopup;
 
+	
+	
 	/*COCKTAIL*/
 
-
+   @PostConstruct
+    public void init() {
+	   ingredientPickList = new DualListModel<>();
+   }
+	         
 
 	public List<CocktailDto> getAllCocktail(){
 		List<CocktailDto> cocktailsListDto = cocktailBo.findAllCocktail();
@@ -49,7 +62,7 @@ public class CocktailMb extends BasePage implements Serializable{
 
 	public String editCocktail(CocktailDto cocktailToEdit){
 		setCurrentCocktail(cocktailToEdit);
-		refeshPickListInfredient();
+		refeshPickListIngredient();
 		return "cocktailForm";
 	}
 
@@ -59,44 +72,10 @@ public class CocktailMb extends BasePage implements Serializable{
 	}
 
 	public String saveCocktail(){
-		if(currentCocktail.getId() != null){
-			saveIngredientCocktail();
+		if(currentCocktail.getId() != null){		
 			cocktailBo.saveCocktail(currentCocktail);
 		}
 		return "cocktailForm";
-	}
-	private void saveIngredientCocktail() {
-		boolean bfound = false;
-		// suppression
-		 
-		for(Iterator<IngredientcocktailDto> itIngCock  = currentCocktail.getIngredientcocktails().iterator(); itIngCock.hasNext();){		
-			IngredientcocktailDto currIngCock = (IngredientcocktailDto) itIngCock.next();
-		    for(IngredientDto curTarg : ingredientPickList.getTarget()){
-			   if(curTarg.getId().equals(currIngCock.getIngredient().getId())){
-				   bfound = true;
-			   }			   
-		    }	
-		    if(bfound == false){
-		    	currentCocktail.getIngredientcocktails().remove(currIngCock);
-		    }
-		    bfound = false;
-		}		
-		// ajout
-		for(IngredientDto curTarg : ingredientPickList.getTarget()){
-			
-			for(Iterator<IngredientcocktailDto> itIngCockAdd  = currentCocktail.getIngredientcocktails().iterator(); itIngCockAdd.hasNext();){
-				IngredientcocktailDto currIngCockToAdd = (IngredientcocktailDto) itIngCockAdd.next();
-				if(curTarg.getId().equals(currIngCockToAdd.getIngredient().getId())){
-					bfound = true;
-				}
-			}
-			if(bfound = false){
-				IngredientcocktailDto ingredientcocktailDto = new IngredientcocktailDto();
-				ingredientcocktailDto.setIngredient(curTarg);
-				currentCocktail.getIngredientcocktails().add(ingredientcocktailDto);				
-			}
-			bfound = false;
-		}
 	}
 
 	public String deleteCocktail(){
@@ -161,11 +140,14 @@ public class CocktailMb extends BasePage implements Serializable{
 		return "ingredientForm";
 	}
 	
-	public void refeshPickListInfredient(){
+	public void refeshPickListIngredient(){
 		boolean bfound = false;
+	
 	    List<IngredientDto> source = new ArrayList<IngredientDto>();  
         List<IngredientDto> target = new ArrayList<IngredientDto>();  
-        
+		
+		ingredientPickList.getSource().clear();
+		ingredientPickList.getTarget().clear();
         for(IngredientDto currIngredient : getAllIngredient()){
         	for(IngredientDto currIngredientCock : currentCocktail.getIngredientsDto()){
         		if(currIngredient.getId().equals(currIngredientCock.getId())){
@@ -180,6 +162,46 @@ public class CocktailMb extends BasePage implements Serializable{
         	bfound = false;
         }        
         ingredientPickList = new DualListModel<>(source, target);
+	}
+	
+	public void ingredientSourceToTarget(){
+		if(currentCocktail != null){
+			
+			/*Set<IngredientDto> locaTargets = new HashSet<IngredientDto>(ingredientPickList.getTarget());
+			Map<IngredientDto,IngredientcocktailDto> currentCocktailIng = new HashMap<IngredientDto,IngredientcocktailDto>();*/
+			
+			boolean bfound = false;
+			// suppression
+			 
+			for(Iterator<IngredientcocktailDto> itIngCock  = currentCocktail.getIngredientcocktails().iterator(); itIngCock.hasNext();){		
+				IngredientcocktailDto currIngCock = (IngredientcocktailDto) itIngCock.next();
+			    for(IngredientDto curTarg : ingredientPickList.getTarget()){
+				   if(curTarg.getId().equals(currIngCock.getIngredient().getId())){
+					   bfound = true;
+				   }			   
+			    }	
+			    if(bfound == false){			    	
+			    	itIngCock.remove();
+			    }
+			    bfound = false;
+			}		
+			// ajout
+			for(IngredientDto curTarg : ingredientPickList.getTarget()){
+				
+				for(Iterator<IngredientcocktailDto> itIngCockAdd  = currentCocktail.getIngredientcocktails().iterator(); itIngCockAdd.hasNext();){
+					IngredientcocktailDto currIngCockToAdd = (IngredientcocktailDto) itIngCockAdd.next();
+					if(curTarg.getId().equals(currIngCockToAdd.getIngredient().getId())){
+						bfound = true;
+					}
+				}
+				if(bfound == false){
+					IngredientcocktailDto ingredientcocktailDto = new IngredientcocktailDto();
+					ingredientcocktailDto.setIngredient(curTarg);					
+					currentCocktail.getIngredientcocktails().add(ingredientcocktailDto);				
+				}
+				bfound = false;
+			}
+		}
 	}
 	/*GETTERS AND SETTETS*/
 
@@ -200,11 +222,34 @@ public class CocktailMb extends BasePage implements Serializable{
 	}
 
 	public DualListModel<IngredientDto> getIngredientPickList() {
+		if(ingredientPickList == null || (ingredientPickList.getSource().size() == 0 && ingredientPickList.getTarget().size() == 0) ){
+			refeshPickListIngredient();
+		}
 		return ingredientPickList;
 	}
 
 	public void setIngredientPickList(DualListModel<IngredientDto> ingredientPickList) {
 		this.ingredientPickList = ingredientPickList;
+	}
+
+
+	public String getColorPopup() {
+		return colorPopup;
+	}
+
+
+	public void setColorPopup(String colorPopup) {
+		this.colorPopup = colorPopup;
+	}
+
+
+	public String getColorInline() {
+		return colorInline;
+	}
+
+
+	public void setColorInline(String colorInline) {
+		this.colorInline = colorInline;
 	}
 	
 	

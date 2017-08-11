@@ -47,16 +47,26 @@
 							<h:inputText styleClass="form-control" id="quantitePleine"  value="#{cocktailMb.currentIngredient.quantitePleine}" maxlength="50" required="false"/>
 							<p:message for="quantitePleine"/>
 						</div>
+		
+
+					</div>
+
+					<div class="row">
+	
 						<div class="col-sm-6 form-group">
 							<div class="checkbox">
 								<label for="alcoolise">
-									<h:selectBooleanCheckbox value="#{cocktailMb.currentIngredient.alcoolise}" id="alcoolise"/>
+									<h:selectBooleanCheckbox value="#{cocktailMb.currentIngredient.alcoolise}" id="alcoolise" disabled="#{empty cocktailMb.currentIngredient.id}"/>
 									#{text['ingredient.alcoolise']}
 								</label>
 							</div>
 							<p:message for="alcoolise"/>
 						</div>
-
+						<div class="col-sm-6 form-group">
+							<h:outputLabel styleClass="control-label" for="quantitePleine" value="#{text['ingredient.degreAlcool']}"/>
+							<h:inputText styleClass="form-control" id="degreAlcool"  value="#{cocktailMb.currentIngredient.degreAlcool}" maxlength="50" required="false"/>
+							<p:message for="degreAlcool"/>
+						</div>
 					</div>
 
 	                <div class="form-group form-actions">

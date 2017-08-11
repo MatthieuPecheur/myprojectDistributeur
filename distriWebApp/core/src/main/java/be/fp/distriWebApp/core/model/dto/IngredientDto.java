@@ -4,7 +4,7 @@ package be.fp.distriWebApp.core.model.dto;
 import java.math.BigDecimal;
 
 
-public class IngredientDto implements java.io.Serializable {
+public class IngredientDto extends AbstractIdentifiedObject<Integer> implements java.io.Serializable {
 
 	private Integer id;
 	private PompeDto pompe;

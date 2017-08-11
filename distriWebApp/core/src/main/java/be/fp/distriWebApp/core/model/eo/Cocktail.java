@@ -11,6 +11,8 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -34,7 +36,9 @@ public class Cocktail implements java.io.Serializable {
 	public static final String DISTRICOKTAILTODOS = "districoktailtodos";
 
 	@Id
-	@Column(name = "id", unique = true, nullable = false)
+	@GeneratedValue(strategy = IDENTITY)
+
+	@Column(name = "Id", unique = true, nullable = false)
 
 	private Integer id;
 
@@ -50,7 +54,7 @@ public class Cocktail implements java.io.Serializable {
 
 	private Integer color;
 
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.LAZY , mappedBy = "cocktailEnCours")
 
 	private Set<Distributeur> distributeurs = new HashSet<Distributeur>(0);
 

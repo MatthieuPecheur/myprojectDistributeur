@@ -414,4 +414,18 @@ button, input, optgroup, select, textarea {
     font-weight: bold;
 }
 
+.ui-picklist .ui-picklist-list {
+    height: 250px !important;
+    list-style-type: none;
+    margin: 0;
+    overflow: auto;
+    padding: 0;
+    width: 481px !important;
+}
+
+.ui-picklist .ui-picklist-filter {
+    padding-right: 15px;
+    width: 96%;
+}
+
 /* Change text color */
