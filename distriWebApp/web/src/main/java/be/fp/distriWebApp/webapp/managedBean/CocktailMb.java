@@ -1,5 +1,6 @@
 package be.fp.distriWebApp.webapp.managedBean;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.context.WebApplicationContext;
 
 import be.fp.distriWebApp.core.bo.CocktailBo;
+import be.fp.distriWebApp.core.bo.CocktailImporterBo;
 import be.fp.distriWebApp.core.bo.IngredientBo;
 import be.fp.distriWebApp.core.model.dto.CocktailDto;
 import be.fp.distriWebApp.core.model.dto.IngredientDto;
@@ -36,6 +38,7 @@ public class CocktailMb extends BasePage implements Serializable{
 	
 	@Autowired private CocktailBo cocktailBo;
 	@Autowired private IngredientBo ingredientBo;
+	@Autowired private CocktailImporterBo cocktailImporterBo; 
 	
 	AdminiDistriMb adminDistriMb;
 
@@ -63,17 +66,19 @@ public class CocktailMb extends BasePage implements Serializable{
 	public String editCocktail(CocktailDto cocktailToEdit){
 		setCurrentCocktail(cocktailToEdit);
 		refeshPickListIngredient();
+		cocktailImporterBo.importExcel(null);
 		return "cocktailForm";
 	}
 
 	public String addCocktail(){
 		currentCocktail = new CocktailDto();
+		refeshPickListIngredient();
 		return "cocktailForm";
 	}
 
 	public String saveCocktail(){
 		if(currentCocktail.getId() != null){		
-			cocktailBo.saveCocktail(currentCocktail);
+			cocktailBo.saveCocktail(currentCocktail);		
 		}
 		return "cocktailForm";
 	}

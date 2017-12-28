@@ -77,6 +77,11 @@
             <value description="name">ROLE_USER</value>
             <value description="description"><![CDATA[Default role for all Users]]></value>
         </row>
+        <row>
+            <value description="id">3</value>
+            <value description="name">ROLE_TABLET</value>
+            <value description="description"><![CDATA[Custum role for tablet]]></value>
+        </row>
     </table>
     <table name="user_role">
         <column>user_id</column>

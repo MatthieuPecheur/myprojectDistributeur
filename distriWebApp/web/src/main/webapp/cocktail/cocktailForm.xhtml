@@ -12,14 +12,15 @@
         <script type="text/javascript">var msgDelConfirm =
            "<h:outputFormat value="#{text['delete.confirm']}"><f:param value="#{delCocktail}" /></h:outputFormat>";
         </script>
-
+		<h2>#{cocktailMb.currentCocktail.intitule}</h2>
         <ul class="nav nav-tabs content-tabs" id="maincontent" role="tablist">
 	          <li class="active"><a href="#infoGen" role="tab" data-toggle="tab">#{text['cocktailForm.tab.infogeneneral']}</a></li>
-	          <li><a href="#ingredientsList" role="tab" data-toggle="tab">#{text['cocktailForm.tab.ingredientsList']}</a></li>
-	          <li><a href="#ingredientParam" role="tab" data-toggle="tab">#{text['cocktailForm.tab.ingredientParam']}</a></li>
+	          <li><a href="#ingredientsList" role="tab" data-toggle="tab" class="#{(empty cocktailMb.currentCocktail.id or currentCocktail eq 0) ? 'disabled' : ''}">#{text['cocktailForm.tab.ingredientsList']}</a></li>
+	          <li><a href="#ingredientParam" role="tab" data-toggle="tab" class="#{(empty cocktailMb.currentCocktail.id or currentCocktail eq 0) ? 'disabled' : ''}">#{text['cocktailForm.tab.ingredientParam']}</a></li>
 
         </ul>
 	  <h:form id="disdtriForm" styleClass="well" autocomplete="off">
+	    
       <div class="tab-content">
 
           <div class="tab-pane fade in active" id="infoGen">

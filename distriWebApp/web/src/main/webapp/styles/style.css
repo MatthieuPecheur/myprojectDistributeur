@@ -428,4 +428,8 @@ button, input, optgroup, select, textarea {
     width: 96%;
 }
 
+a.disabled {
+    pointer-events: none;
+}
+
 /* Change text color */

@@ -7,6 +7,10 @@ public class IngredientcocktailDto implements java.io.Serializable {
 
 
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3402109015603525139L;
 	private int id;
 	private IngredientDto ingredient;
 	private int numOrdre;

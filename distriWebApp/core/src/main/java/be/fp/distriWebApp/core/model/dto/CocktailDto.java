@@ -9,6 +9,10 @@ import java.util.Set;
 
 public class CocktailDto implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1405515382862168729L;
 	private Integer id;
 	private String intitule;
 	private Float prix;
