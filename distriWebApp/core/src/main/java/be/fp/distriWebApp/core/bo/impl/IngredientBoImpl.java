@@ -66,7 +66,7 @@ public class IngredientBoImpl extends abstractDozerMapperBo implements Ingredien
 
 	@Transactional(readOnly=false)
 	@Override
-	public void saveDistributeur(IngredientDto ingredientDto){
+	public void saveIngredient(IngredientDto ingredientDto){
 		if(ingredientDto != null){
 			ingredientDao.save(mapper.map(ingredientDto,Ingredient.class));
 		}

@@ -85,7 +85,8 @@
         <!-- Framework/Plugin versions -->
         <appfuse.version>3.5.1-SNAPSHOT</appfuse.version>
         <java.version>1.7</java.version>
-        
+        <poi.version>3.17</poi.version>
+        <flyway.version>4.2.0</flyway.version>
         <!-- Database settings Localhost -->
         <!-- 
         <jdbc.groupId>mysql</jdbc.groupId>
@@ -103,6 +104,7 @@
         <jdbc.artifactId>mysql-connector-java</jdbc.artifactId>
         <jdbc.version>5.1.27</jdbc.version>
         <jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
+        <db.url>jdbc:mysql://192.168.1.9:3306/distriwebapp</db.url>
         <jdbc.url><![CDATA[jdbc:mysql://192.168.1.9:3306/distriwebapp?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8]]></jdbc.url>
         <jdbc.username>root</jdbc.username>
         <jdbc.password>toor</jdbc.password>

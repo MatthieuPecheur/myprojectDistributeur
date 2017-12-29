@@ -15,7 +15,7 @@ public interface IngredientBo {
 	@WebMethod public List<IngredientDto> findAllIngredients();
 	@WebMethod public List<IngredientDto> findAllIngredientsSoft();
 	@WebMethod public List<IngredientDto> findAllIngredientsAlcolise();
-	@WebMethod public void saveDistributeur(@WebParam(name="IngredientDto")IngredientDto ingredientDto);
+	@WebMethod public void saveIngredient(@WebParam(name="IngredientDto")IngredientDto ingredientDto);
 	@WebMethod public void deleteIngredient(@WebParam(name="IngredientDto")IngredientDto ingredientDto);
 	@WebMethod public void addIngredient(@WebParam(name="IngredientDto")IngredientDto ingredientDto);
 

@@ -66,7 +66,7 @@ public class CocktailMb extends BasePage implements Serializable{
 	public String editCocktail(CocktailDto cocktailToEdit){
 		setCurrentCocktail(cocktailToEdit);
 		refeshPickListIngredient();
-		cocktailImporterBo.importExcel(null);
+		cocktailImporterBo.importExcel("D:/importCocktail.xlsx");
 		return "cocktailForm";
 	}
 
@@ -120,7 +120,7 @@ public class CocktailMb extends BasePage implements Serializable{
 	}
 	public String saveIngredient(){
 		if(currentIngredient.getId() != null){
-			ingredientBo.saveDistributeur(currentIngredient);
+			ingredientBo.saveIngredient(currentIngredient);
 		}else{
 			ingredientBo.addIngredient(currentIngredient);
 		}

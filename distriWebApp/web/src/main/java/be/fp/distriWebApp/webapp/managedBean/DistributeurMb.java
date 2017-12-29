@@ -75,7 +75,7 @@ public class DistributeurMb extends BasePage implements Serializable{
 	}
 	public String savePompe(){
 		if(currentPompe.getId() != null){
-			//distributeurBo.saveDistributeur(currentDistributeur);
+			//distributeurBo.saveIngredient(currentDistributeur);
 		}
 
 		return "";
