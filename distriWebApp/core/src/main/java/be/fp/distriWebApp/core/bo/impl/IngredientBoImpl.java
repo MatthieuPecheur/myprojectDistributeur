@@ -87,5 +87,15 @@ public class IngredientBoImpl extends abstractDozerMapperBo implements Ingredien
 			ingredientDao.save(mapper.map(ingredientDto,Ingredient.class));
 		}
 	}
-
+	@Transactional(readOnly=true)
+	@Override
+	public IngredientDto findbyImportId(Integer importId) {
+		if(importId != null && importId > 0){
+			Ingredient ing = ingredientDao.findbyImportId(importId);
+			if(ing != null){
+				return mapper.map(ing,IngredientDto.class);
+			}
+		}
+		return null;
+	}
 }

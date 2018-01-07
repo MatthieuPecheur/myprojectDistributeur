@@ -34,6 +34,8 @@ public class Cocktail implements java.io.Serializable {
 	public static final String DISTRICOKTAILDISPOS = "districoktaildispos";
 	public static final String INGREDIENTCOCKTAILS = "ingredientcocktails";
 	public static final String DISTRICOKTAILTODOS = "districoktailtodos";
+	public static final String IMPORTID = "importId";
+
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -51,7 +53,6 @@ public class Cocktail implements java.io.Serializable {
 	private Float prix;
 
 	@Column(name = "color")
-
 	private Integer color;
 
 	@OneToMany(fetch = FetchType.LAZY , mappedBy = "cocktailEnCours")
@@ -69,6 +70,9 @@ public class Cocktail implements java.io.Serializable {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cocktail")
 
 	private Set<Districoktailtodo> districoktailtodos = new HashSet<Districoktailtodo>(0);
+
+	@Column(name = "import_id")
+	private Integer importId;
 
 	public Integer getId() {
 		return id;
@@ -132,6 +136,14 @@ public class Cocktail implements java.io.Serializable {
 
 	public void setDistricoktailtodos(Set<Districoktailtodo> districoktailtodos) {
 		this.districoktailtodos = districoktailtodos;
+	}
+
+	public Integer getImportId() {
+		return importId;
+	}
+
+	public void setImportId(Integer importId) {
+		this.importId = importId;
 	}
 
 	/**

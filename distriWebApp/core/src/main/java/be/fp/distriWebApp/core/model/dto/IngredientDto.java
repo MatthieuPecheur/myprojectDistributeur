@@ -14,6 +14,8 @@ public class IngredientDto extends AbstractIdentifiedObject<Integer> implements 
 	private String marque;
 	private BigDecimal quantitePleine;
 	private BigDecimal quantiteRestante;
+	private Integer importId;
+
 
 	public Integer getId() {
 		return id;
@@ -84,4 +86,11 @@ public class IngredientDto extends AbstractIdentifiedObject<Integer> implements 
 		return intitule + " (" + marque +  ")";
 	}
 
+	public Integer getImportId() {
+		return importId;
+	}
+
+	public void setImportId(Integer importId) {
+		this.importId = importId;
+	}
 }

@@ -22,4 +22,10 @@ public class IngredientDaoImpl extends GenericDaoHibernate<Ingredient, Integer> 
 		return ingredientList;
 	}
 
+	@Override
+	public Ingredient findbyImportId(Integer importId) {
+		List<Ingredient> ingredientList = getSession().createCriteria(Ingredient.class).add(Restrictions.eq("importId", importId)).list();
+		return ingredientList.isEmpty() ? null : ingredientList.get(0);
+
+	}
 }

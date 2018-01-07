@@ -30,6 +30,7 @@ public class Ingredient implements java.io.Serializable {
 	public static final String MARQUE = "marque";
 	public static final String QUANTITEPLEINE = "quantitePleine";
 	public static final String QUANTITERESTANTE = "quantiteRestante";
+	public static final String IMPORTID = "importId";
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -66,6 +67,9 @@ public class Ingredient implements java.io.Serializable {
 	@Column(name = "quantite_restante")
 
 	private BigDecimal quantiteRestante;
+
+	@Column(name = "import_id")
+	private Integer importId;
 
 	public Integer getId() {
 		return id;
@@ -131,7 +135,13 @@ public class Ingredient implements java.io.Serializable {
 		this.quantiteRestante = quantiteRestante;
 	}
 
+	public Integer getImportId() {
+		return importId;
+	}
 
+	public void setImportId(Integer importId) {
+		this.importId = importId;
+	}
 	/**
 	* toString
 	* @return String

@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface IngredientDao extends GenericDao<Ingredient, Integer> {
     public List<Ingredient> findAllDistinctAlcool(boolean withAlcool);
+    public Ingredient findbyImportId(Integer importId);
 }

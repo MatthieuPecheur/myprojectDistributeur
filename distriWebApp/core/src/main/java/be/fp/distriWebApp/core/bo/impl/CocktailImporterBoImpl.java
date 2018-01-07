@@ -4,7 +4,6 @@ import be.fp.distriWebApp.core.bo.CocktailImporterBo;
 import be.fp.distriWebApp.core.bo.IngredientBo;
 import be.fp.distriWebApp.core.bo.abstractDozerMapperBo;
 import be.fp.distriWebApp.core.model.dto.IngredientDto;
-import be.fp.distriWebApp.core.model.eo.Ingredient;
 import org.apache.poi.UnsupportedFileFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -13,6 +12,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.jws.WebService;
 import java.io.File;
@@ -28,9 +28,11 @@ public class CocktailImporterBoImpl extends abstractDozerMapperBo implements Coc
 
 	@Autowired private IngredientBo ingredientBo;
 
+	@Transactional(readOnly=false)
 	@Override
 	public void importExcel(String excelfilePath){
-
+		boolean existingIngredient = false;
+		boolean existingCocktail = false;
 	    try {
 	    	FileInputStream excelFileIs = new FileInputStream(new File(excelfilePath));
 			XSSFWorkbook workbook  = new XSSFWorkbook(excelFileIs);
@@ -51,6 +53,19 @@ public class CocktailImporterBoImpl extends abstractDozerMapperBo implements Coc
 						switch (k){
 							case 1:
 								// Numéro unique de l'ingredient
+								if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+
+									if((Double)currentCell.getNumericCellValue() != null){
+										newIngredientDto.setImportId((int)currentCell.getNumericCellValue());
+										// test l'existance de l'ingredient dans la DB
+										IngredientDto existIng = ingredientBo.findbyImportId(newIngredientDto.getImportId());
+										if(existIng != null){
+											existingIngredient = true;
+										}
+									}
+								}else{
+									throw (new Exception("Mauvais format de cellule dans la feuille 1 / ligne " + i + " / colonne " + k));
+								}
 								break;
 							case 2:
 								if(currentCell.getCellTypeEnum() == CellType.STRING){
@@ -101,7 +116,12 @@ public class CocktailImporterBoImpl extends abstractDozerMapperBo implements Coc
 
 						k++;
 					}
-					ingredientBo.addIngredient(newIngredientDto);
+					if(!existingIngredient){
+						ingredientBo.addIngredient(newIngredientDto);
+					}else{
+						throw (new Exception("L'ingrédient dont l'id unique est " + newIngredientDto.getImportId() + " existe déjà dans la base de données" ));
+					}
+					existingIngredient = false;
 				}
 				i++;
             }
@@ -119,7 +139,8 @@ public class CocktailImporterBoImpl extends abstractDozerMapperBo implements Coc
 		}catch (Exception e){
 			e.printStackTrace();
 		}
+	}
 
-		
-	}	
+
+
 }

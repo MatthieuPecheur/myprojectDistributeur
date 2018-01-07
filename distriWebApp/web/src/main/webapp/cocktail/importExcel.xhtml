@@ -1,0 +1,30 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="/layouts/default.xhtml">
+    <ui:define name="title">#{text['upload.title']}</ui:define>
+    <ui:param name="menu" value="AdminMenu"/>
+
+    <ui:define name="body">
+        <div class="col-sm-4">
+            <h2><h:outputText value="#{text['upload.heading.excel']}"/></h2>
+        </div>
+        <div class="col-sm-6">
+            <h:form id="uploadForm" enctype="multipart/form-data" styleClass="well">
+                <div class="form-group">
+                    <h:outputLabel styleClass="control-label" for="file" value="#{text['uploadForm.file']}"/>
+                    <p:fileUpload id="file" value="#{fileUpload.file}" mode="simple" required="true" allowTypes="/(\.|\/)(xls|xlsx)$/"
+                                  fileUploadListener="#{fileUpload.upload}"/>
+                    <p:message for="file"/>
+                </div>
+                <div class="form-group form-actions">
+                    <h:commandButton value="#{text['button.upload']}" action="#{fileUpload.upload}"
+                                     id="upload" styleClass="btn btn-primary" ajax="false"/>
+                    <a href="home" id="cancel" class="btn btn-default">#{text['button.cancel']}</a>
+                </div>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
+</html>

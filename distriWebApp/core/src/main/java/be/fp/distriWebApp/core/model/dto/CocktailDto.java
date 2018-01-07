@@ -17,6 +17,8 @@ public class CocktailDto implements java.io.Serializable {
 	private String intitule;
 	private Float prix;
 	private Integer color;
+	private Integer importId;
+
 
 	private Set<IngredientcocktailDto> ingredientcocktails = new HashSet<IngredientcocktailDto>(0);
 
@@ -73,5 +75,11 @@ public class CocktailDto implements java.io.Serializable {
 		return ingCockList;		
 	}
 
+	public Integer getImportId() {
+		return importId;
+	}
 
+	public void setImportId(Integer importId) {
+		this.importId = importId;
+	}
 }

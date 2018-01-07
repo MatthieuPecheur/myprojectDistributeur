@@ -18,5 +18,6 @@ public interface IngredientBo {
 	@WebMethod public void saveIngredient(@WebParam(name="IngredientDto")IngredientDto ingredientDto);
 	@WebMethod public void deleteIngredient(@WebParam(name="IngredientDto")IngredientDto ingredientDto);
 	@WebMethod public void addIngredient(@WebParam(name="IngredientDto")IngredientDto ingredientDto);
+	@WebMethod public IngredientDto findbyImportId(@WebParam(name="importId")Integer importId);
 
 }

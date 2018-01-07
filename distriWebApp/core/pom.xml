@@ -47,7 +47,6 @@
 					</locations>
 					<baselineOnMigrate>true</baselineOnMigrate>
 				</configuration>
-
 				<dependencies>
 					<dependency>
 						<groupId>${jdbc.groupId}</groupId>

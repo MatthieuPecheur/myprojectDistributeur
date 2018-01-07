@@ -16,6 +16,7 @@
         <Menu name="CocktailMenu" title="menu.cocktailGen" description="Cocktail Menu" roles="ROLE_ADMIN" page="/cocktail/cocktails.xhtml">
             <Item name="IngredMenu" title="menu.ingredient" page="/cocktail/ingredients.xhtml"/>
             <Item name="CockMenu" title="menu.cocktail" page="/cocktail/cocktails.xhtml"/>
+            <Item name="ImportMenu" title="menu.importExcell" page="/cocktail/importExcel.xhtml"/>
         </Menu>
 
         <Menu name="Logout" title="user.logout" page="/logout" roles="ROLE_ADMIN,ROLE_USER"/>
